@@ -23,16 +23,26 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.Query;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
+
+    String validPassword;
+    boolean pass = false;
+
     static final int REQUEST_CODE_SESSION = 1;
     String titleString;
+    String pressedSession;
+    String pressedPassword;
     final ArrayList<String> sessions = new ArrayList<String>();
+    final ArrayList<String> actives = new ArrayList<String>();
+    final ArrayList<String> passwords = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase sessionsRef = ref.child("sessions");
 
+
         sessionsRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
@@ -63,6 +74,13 @@ public class MainActivity extends ActionBarActivity {
 //                Session mySession = (Session) snapshot.getValue();
 
                 sessions.add((String) snapshot.child("name").getValue());
+                passwords.add((String) snapshot.child("password").getValue());
+                if((boolean) snapshot.child("active").getValue()){
+                    actives.add("Active");
+                } else {
+                    actives.add("Inactive");
+                }
+
                 adapter.notifyDataSetChanged();
             }
 
@@ -75,12 +93,10 @@ public class MainActivity extends ActionBarActivity {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
-
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
@@ -102,7 +118,9 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 if(name.getText().length() > 0){
                     Session mySession = new Session(name.getText().toString(), password.getText().toString());
-                    sessionsRef.push().setValue(mySession);
+                    Map<String, Session> mysessions = new HashMap<String, Session>();
+                    mysessions.put(name.getText().toString(), mySession);
+                    sessionsRef.setValue(mysessions);
 
                     Intent intent = new Intent(MainActivity.this, SessionActivity.class);
                     intent.putExtra("sessionTitle", name.getText().toString());
@@ -117,6 +135,8 @@ public class MainActivity extends ActionBarActivity {
         AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                pressedSession = sessions.get(position);
+                pressedPassword = passwords.get(position);
                 adLoginSession.show(getFragmentManager(), TAG );
             }
         };
@@ -136,19 +156,31 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             //Get layout inflater
-            LayoutInflater inflater = getActivity().getLayoutInflater();
+//            LayoutInflater inflater = getActivity().getLayoutInflater();
 
-            builder.setView(inflater.inflate(R.layout.dialog_login,null))
-
+            final View view = LayoutInflater.from(getApplicationContext()).inflate(R.layout.dialog_login, null);
+            builder.setView(view);
                     //.setMessage("Ingresa contraseña para ingresar")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // OK was pressed
-                            //Intent intent = new Intent(MainActivity.this, SessionActivity.class);
-                            //intent.putExtra("sessionTitle", sessions.get(position));
-                            //startActivity(intent);
+                            final EditText userPassword = (EditText) view.findViewById(R.id.password);
+
+                            validPassword = pressedPassword;
+
+                            if (validPassword.equals("") || userPassword.getText().toString().equals(validPassword)) {
+                                pass = true;
+                            }
+
+                            Toast.makeText(getApplicationContext(), validPassword + " and " + userPassword.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                            if (pass) {
+                                Intent intent = new Intent(MainActivity.this, SessionActivity.class);
+                                intent.putExtra("sessionTitle", pressedSession);
+                                startActivity(intent);
+                            }
                         }
                     })
                     .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
