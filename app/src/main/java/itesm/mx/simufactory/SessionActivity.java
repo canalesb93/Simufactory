@@ -6,6 +6,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,11 +66,27 @@ public class SessionActivity extends ActionBarActivity {
         usersListView.setAdapter(adapter);
         registerForContextMenu(usersListView);
 
-
-        ArrayList<Operation> operations = new ArrayList<Operation>();
-//        operations.add(new Operation("A", "P1", ))
+        Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        // Create an ArrayAdapter using the string array and a default spinner layout
+        ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.models_array, android.R.layout.simple_spinner_item);
+        // Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        // Apply the adapter to the spinner
+        spinner.setAdapter(spinnerAdapter);
 
     }
 
 
+    public void createModel1(){
+        ArrayList<Operation> operations = new ArrayList<Operation>();
+        operations.add(new Operation("A", 5, 0, 0, null));
+        operations.add(new Operation("B", 10, 0, 0, null));
+
+        operations.add(new Operation("P1", 10, 0, 5000, new String[]{"A"}));
+        operations.add(new Operation("P2", 20, 0, 7500, new String[]{"B"}));
+
+        operations.add(new Operation("C", 10, 35, 10000, new String[]{"P1", "P2"}));
+
+        Simulation simulation1 = new Simulation(100, 180000, operations, 3);
+    }
 }

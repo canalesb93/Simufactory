@@ -8,15 +8,13 @@ import java.util.ArrayList;
  */
 public class Operation {
     String name;
-    String produces;
     int cost;
     int gain;
     long time;
     String[] requires;
 
-    public Operation(String name, String produces, int cost, int gain, long time, String[] requires) {
+    public Operation(String name, int cost, int gain, long time, String[] requires) {
         this.name = name;
-        this.produces = produces;
         this.cost = cost;
         this.gain = gain;
         this.time = time;
@@ -29,14 +27,6 @@ public class Operation {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getProduces() {
-        return produces;
-    }
-
-    public void setProduces(String produces) {
-        this.produces = produces;
     }
 
     public int getCost() {
