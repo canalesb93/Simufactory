@@ -118,9 +118,9 @@ public class MainActivity extends ActionBarActivity {
             public void onClick(View v) {
                 if(name.getText().length() > 0){
                     Session mySession = new Session(name.getText().toString(), password.getText().toString());
-                    Map<String, Session> mysessions = new HashMap<String, Session>();
-                    mysessions.put(name.getText().toString(), mySession);
-                    sessionsRef.setValue(mysessions);
+//                    Map<String, Session> mysessions = new HashMap<String, Session>();
+//                    mysessions.put(name.getText().toString(), mySession);
+                    sessionsRef.child(name.getText().toString()).setValue(mySession);
 
                     Intent intent = new Intent(MainActivity.this, SessionActivity.class);
                     intent.putExtra("sessionTitle", name.getText().toString());
@@ -167,6 +167,7 @@ public class MainActivity extends ActionBarActivity {
                         public void onClick(DialogInterface dialog, int id) {
                             // OK was pressed
                             final EditText userPassword = (EditText) view.findViewById(R.id.password);
+                            final EditText userName = (EditText) view.findViewById(R.id.username);
 
                             validPassword = pressedPassword;
 
@@ -177,6 +178,15 @@ public class MainActivity extends ActionBarActivity {
                             Toast.makeText(getApplicationContext(), validPassword + " and " + userPassword.getText().toString(), Toast.LENGTH_SHORT).show();
 
                             if (pass) {
+
+                                final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
+                                final Firebase usersRef = ref.child("sessions/"+pressedSession+"/users");
+
+                                User myuser = new User(userName.getText().toString());
+//                                Map<String, User> myusers = new HashMap<String, User>();
+//                                myusers.put(userName.getText().toString(), myuser);
+                                usersRef.child(userName.getText().toString()).setValue(myuser);
+
                                 Intent intent = new Intent(MainActivity.this, SessionActivity.class);
                                 intent.putExtra("sessionTitle", pressedSession);
                                 startActivity(intent);
