@@ -10,4 +10,5 @@
         <item>Model 1 (3 teams)</item>
         <item>Model 2 (non-existent)</item>
     </string-array>
+    <string name="title_activity_operation">OperationActivity</string>
 </resources>
