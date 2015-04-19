@@ -26,6 +26,10 @@
             android:name=".TeamActivity"
             android:label="@string/title_activity_team" >
         </activity>
+        <activity
+            android:name=".OperationActivity"
+            android:label="@string/title_activity_operation" >
+        </activity>
     </application>
 
 </manifest>
