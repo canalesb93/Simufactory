@@ -22,6 +22,10 @@
             android:name=".SessionActivity"
             android:label="@string/title_activity_session" >
         </activity>
+        <activity
+            android:name=".TeamActivity"
+            android:label="@string/title_activity_team" >
+        </activity>
     </application>
 
 </manifest>
