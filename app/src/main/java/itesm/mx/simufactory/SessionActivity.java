@@ -72,25 +72,30 @@ public class SessionActivity extends ActionBarActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
-        sessionRef.addChildEventListener(new ChildEventListener() {
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
-                Log.v("DEBUG, ", dataSnapshot.getValue().toString());
-//                Toast.makeText(getApplicationContext(), "Started: " + dataSnapshot.child("started").getValue().toString(), Toast.LENGTH_SHORT).show();
-                if(dataSnapshot.getKey() == "started" && dataSnapshot.getValue() == "true" && admin == false){
-                    Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
-                    intent.putExtra("admin", false);
-                    intent.putExtra("sessionTitle", titleString);
-                    startActivity(intent);
+        if(!admin) {
+            sessionRef.addChildEventListener(new ChildEventListener() {
+                // Retrieve new posts as they are added to Firebase
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
+                    Log.v("DEBUG add, ", dataSnapshot.getValue().toString());
+
                 }
-            }
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-            }
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            public void onCancelled(FirebaseError firebaseError) {}
-        });
+
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                    Log.v("DEBUG cha, ", dataSnapshot.getValue().toString());
+                    //                Toast.makeText(getApplicationContext(), "Started: " + dataSnapshot.child("started").getValue().toString(), Toast.LENGTH_SHORT).show();
+                    if(dataSnapshot.getValue() == "true" || dataSnapshot.getValue().equals(true)) {
+                        Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
+                        intent.putExtra("admin", false);
+                        intent.putExtra("sessionTitle", titleString);
+                        startActivity(intent);
+                    }
+                }
+                public void onChildRemoved(DataSnapshot dataSnapshot) {}
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+                public void onCancelled(FirebaseError firebaseError) {}
+            });
+        }
 
         usersListView.setAdapter(adapter);
         registerForContextMenu(usersListView);
