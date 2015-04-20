@@ -3,6 +3,7 @@ package itesm.mx.simufactory;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -74,10 +75,17 @@ public class SessionActivity extends ActionBarActivity {
         sessionRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {}
+            public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
+                Log.v("DEBUG, ", dataSnapshot.getValue().toString());
+//                Toast.makeText(getApplicationContext(), "Started: " + dataSnapshot.child("started").getValue().toString(), Toast.LENGTH_SHORT).show();
+                if(dataSnapshot.getKey() == "started" && dataSnapshot.getValue() == "true" && admin == false){
+                    Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
+                    intent.putExtra("admin", false);
+                    intent.putExtra("sessionTitle", titleString);
+                    startActivity(intent);
+                }
+            }
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                boolean started = (boolean) dataSnapshot.child("started").getValue();
-                Toast.makeText(getApplicationContext(), "Started: " + started, Toast.LENGTH_SHORT).show();
             }
             public void onChildRemoved(DataSnapshot dataSnapshot) {}
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
@@ -99,10 +107,12 @@ public class SessionActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if(admin){
+                    sessionRef.child("started").setValue(true);
                     Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
                     intent.putExtra("admin", true);
                     intent.putExtra("sessionTitle", titleString);
                     startActivity(intent);
+
                 } else {
                     Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
                 }
