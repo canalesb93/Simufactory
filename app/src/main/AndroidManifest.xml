@@ -30,6 +30,10 @@
             android:name=".OperationActivity"
             android:label="@string/title_activity_operation" >
         </activity>
+        <activity
+            android:name=".MasterActivity"
+            android:label="@string/title_activity_master" >
+        </activity>
     </application>
 
 </manifest>

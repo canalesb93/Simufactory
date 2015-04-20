@@ -11,4 +11,5 @@
         <item>Model 2 (non-existent)</item>
     </string-array>
     <string name="title_activity_operation">OperationActivity</string>
+    <string name="title_activity_master">MasterActivity</string>
 </resources>

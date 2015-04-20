@@ -2,16 +2,19 @@ package itesm.mx.simufactory;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class TeamActivity extends ActionBarActivity {
+public class TeamActivity extends MasterActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_team);
+
+        Log.v("DEBUG:", testing);
     }
 
 
