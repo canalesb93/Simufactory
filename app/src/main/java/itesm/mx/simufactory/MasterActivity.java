@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 public abstract class MasterActivity extends ActionBarActivity {
 
-    String testing = "super tet";
-
     TextView timerTextView;
     long startTime = 0;
 
@@ -26,7 +24,7 @@ public abstract class MasterActivity extends ActionBarActivity {
                 int seconds = (int) (millis / 1000);
                 int minutes = seconds / 60;
                 seconds = seconds % 60;
-                timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+                timerTextView.setText(String.format("%02d:%02d", minutes, seconds));
             }
 
             timerHandler.postDelayed(this, 500);
