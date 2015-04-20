@@ -40,6 +40,6 @@ public abstract class MasterActivity extends ActionBarActivity {
     @Override
     public void onPause() {
         super.onPause();
-        timerHandler.removeCallbacks(timerRunnable);
+//        timerHandler.removeCallbacks(timerRunnable);
     }
 }
