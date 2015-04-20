@@ -71,7 +71,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="322dp"
+            android:layout_height="239dp"
             android:id="@+id/listView2" />
     </LinearLayout>
 
