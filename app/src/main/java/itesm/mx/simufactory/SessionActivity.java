@@ -79,10 +79,12 @@ public class SessionActivity extends ActionBarActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.v("CHANGED", "Session started: " + dataSnapshot.getValue().toString());
-                    Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
-                    intent.putExtra("admin", false);
-                    intent.putExtra("sessionTitle", titleString);
-                    startActivity(intent);
+                    if (dataSnapshot.getValue().toString() == "true") {
+                        Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
+                        intent.putExtra("admin", false);
+                        intent.putExtra("sessionTitle", titleString);
+                        startActivity(intent);
+                    }
                 }
 
                 @Override
