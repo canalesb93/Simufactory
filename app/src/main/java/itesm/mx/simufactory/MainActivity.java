@@ -124,6 +124,7 @@ public class MainActivity extends ActionBarActivity {
 
                     Intent intent = new Intent(MainActivity.this, SessionActivity.class);
                     intent.putExtra("sessionTitle", name.getText().toString());
+                    intent.putExtra("admin", true);
                     Toast.makeText(getApplicationContext(), "Session created.", Toast.LENGTH_SHORT).show();
                     startActivityForResult(intent, REQUEST_CODE_SESSION);
                 } else {
@@ -188,6 +189,7 @@ public class MainActivity extends ActionBarActivity {
                                 usersRef.child(userName.getText().toString()).setValue(myuser);
 
                                 Intent intent = new Intent(MainActivity.this, SessionActivity.class);
+                                intent.putExtra("admin", false);
                                 intent.putExtra("sessionTitle", pressedSession);
                                 startActivity(intent);
                             }

@@ -51,8 +51,8 @@
         android:layout_below="@+id/textView"
         android:layout_alignRight="@+id/textView5"
         android:layout_alignEnd="@+id/textView5"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2" />
+        android:layout_toEndOf="@+id/textView3"
+        android:layout_toRightOf="@+id/textView3" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -126,16 +126,21 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Teams"
         android:id="@+id/textView6"
-        android:layout_below="@+id/spinner"
+        android:layout_below="@+id/startSessionButton"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="49dp" />
+        android:layout_marginBottom="10dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
-        android:id="@+id/button2"
+        android:id="@+id/startSessionButton"
         android:layout_below="@+id/editText4"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/editText4"
+        android:layout_alignEnd="@+id/editText4"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
 
 </RelativeLayout>

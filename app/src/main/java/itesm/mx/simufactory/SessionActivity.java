@@ -1,10 +1,13 @@
 package itesm.mx.simufactory;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,7 +24,8 @@ import java.util.ArrayList;
 public class SessionActivity extends ActionBarActivity {
     final int REQUEST_CODE = 1;
     TextView titleTextView;
-    String titleString;
+    String titleString = "No title";
+    boolean admin = false;
 
     final ArrayList<String> users = new ArrayList<String>();
 
@@ -31,12 +35,15 @@ public class SessionActivity extends ActionBarActivity {
         setContentView(R.layout.activity_session);
 
         final ListView usersListView = (ListView) findViewById(R.id.teamnamesListView);
+        final Button startSession = (Button) findViewById(R.id.startSessionButton);
+
 
         titleTextView = (TextView) findViewById(R.id.titleSession);
         Bundle extras = getIntent().getExtras();
 
         if(extras!= null){
             titleString = extras.getString("sessionTitle");
+            admin = extras.getBoolean("admin");
             titleTextView.setText(titleString);
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
@@ -45,6 +52,7 @@ public class SessionActivity extends ActionBarActivity {
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase usersRef = ref.child("sessions/"+titleString+"/users");
+        final Firebase sessionRef = ref.child("sessions/"+titleString);
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_usersrow, R.id.usersrowTV, users);
 
@@ -63,6 +71,19 @@ public class SessionActivity extends ActionBarActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
+        sessionRef.addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {}
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                boolean started = (boolean) dataSnapshot.child("started").getValue();
+                Toast.makeText(getApplicationContext(), "Started: " + started, Toast.LENGTH_SHORT).show();
+            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
         usersListView.setAdapter(adapter);
         registerForContextMenu(usersListView);
 
@@ -73,6 +94,18 @@ public class SessionActivity extends ActionBarActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         // Apply the adapter to the spinner
         spinner.setAdapter(spinnerAdapter);
+
+        startSession.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                if(admin){
+                    Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
+                    intent.putExtra("admin", true);
+                    intent.putExtra("sessionTitle", titleString);
+                    startActivity(intent);
+                }
+            }
+        });
 
     }
 
