@@ -18,6 +18,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -62,7 +63,6 @@ public class SessionActivity extends ActionBarActivity {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 users.add((String) snapshot.child("name").getValue());
-
                 adapter.notifyDataSetChanged();
             }
 
@@ -72,28 +72,20 @@ public class SessionActivity extends ActionBarActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
+//        Log.v("DEBUG test,", "testing"+ sessionRef.child("starter").)
+
         if(!admin) {
-            sessionRef.addChildEventListener(new ChildEventListener() {
-                // Retrieve new posts as they are added to Firebase
+            sessionRef.child("started").addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onChildAdded(DataSnapshot dataSnapshot, String previousChildKey) {
-                    Log.v("DEBUG add, ", dataSnapshot.getValue().toString());
-
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    Log.v("CHANGED", "Session started: " + dataSnapshot.getValue().toString());
                 }
 
-                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                    Log.v("DEBUG cha, ", dataSnapshot.getValue().toString());
-                    //                Toast.makeText(getApplicationContext(), "Started: " + dataSnapshot.child("started").getValue().toString(), Toast.LENGTH_SHORT).show();
-                    if(dataSnapshot.getValue() == "true" || dataSnapshot.getValue().equals(true)) {
-                        Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
-                        intent.putExtra("admin", false);
-                        intent.putExtra("sessionTitle", titleString);
-                        startActivity(intent);
-                    }
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.v("CANCELLED", "Session started: " + firebaseError.getMessage());
+
                 }
-                public void onChildRemoved(DataSnapshot dataSnapshot) {}
-                public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-                public void onCancelled(FirebaseError firebaseError) {}
             });
         }
 
