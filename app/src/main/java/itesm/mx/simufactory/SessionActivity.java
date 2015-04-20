@@ -103,6 +103,8 @@ public class SessionActivity extends ActionBarActivity {
                     intent.putExtra("admin", true);
                     intent.putExtra("sessionTitle", titleString);
                     startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
                 }
             }
         });
