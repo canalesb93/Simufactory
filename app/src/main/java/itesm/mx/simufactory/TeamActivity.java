@@ -54,7 +54,7 @@ public class TeamActivity extends MasterActivity {
 
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
-        final Firebase usersRef = ref.child("sessions/"+titleString+"/users");
+        final Firebase userRef = ref.child("sessions/"+titleString+"/users/"+userName);
         sessionRef = ref.child("sessions/"+titleString);
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
@@ -66,6 +66,17 @@ public class TeamActivity extends MasterActivity {
 
              public void onCancelled(FirebaseError firebaseError) {}
         });
+
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+//                endTime = (long) snapshot.child("time").getValue();
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
+
 
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, operations);
 

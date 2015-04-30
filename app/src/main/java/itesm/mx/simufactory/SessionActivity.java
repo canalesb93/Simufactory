@@ -32,6 +32,7 @@ public class SessionActivity extends ActionBarActivity {
     boolean admin = false;
 
     final ArrayList<String> users = new ArrayList<String>();
+    int teamCounter = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,12 @@ public class SessionActivity extends ActionBarActivity {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 users.add((String) snapshot.child("name").getValue());
+
                 adapter.notifyDataSetChanged();
+                if(admin) {
+                    usersRef.child(snapshot.child("name").getValue().toString()).child("teamId").setValue(teamCounter);
+                    teamCounter++;
+                }
             }
 
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
