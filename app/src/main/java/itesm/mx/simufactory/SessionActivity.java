@@ -39,6 +39,11 @@ public class SessionActivity extends ActionBarActivity {
         final ListView usersListView = (ListView) findViewById(R.id.teamnamesListView);
         final Button startSession = (Button) findViewById(R.id.startSessionButton);
         final EditText timerConfig = (EditText) findViewById(R.id.timerConfig);
+        final EditText budgetConfig = (EditText) findViewById(R.id.budgetET);
+        final EditText expensesConfig = (EditText) findViewById(R.id.expensesET);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+
+
 
         titleTextView = (TextView) findViewById(R.id.titleSession);
 
@@ -76,6 +81,12 @@ public class SessionActivity extends ActionBarActivity {
 //      Log.v("DEBUG test,", "testing"+ sessionRef.child("starter").)
 
         if(!admin) {
+            timerConfig.setEnabled(false);
+            expensesConfig.setEnabled(false);
+            budgetConfig.setEnabled(false);
+            startSession.setEnabled(false);
+            spinner.setEnabled(false);
+
             sessionRef.child("started").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -99,7 +110,6 @@ public class SessionActivity extends ActionBarActivity {
         usersListView.setAdapter(adapter);
         registerForContextMenu(usersListView);
 
-        Spinner spinner = (Spinner) findViewById(R.id.spinner);
         // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter<CharSequence> spinnerAdapter = ArrayAdapter.createFromResource(this, R.array.models_array, android.R.layout.simple_spinner_item);
         // Specify the layout to use when the list of choices appears
@@ -122,6 +132,7 @@ public class SessionActivity extends ActionBarActivity {
                 Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
                 intent.putExtra("admin", true);
                 intent.putExtra("sessionTitle", titleString);
+
 
                 startActivity(intent);
             } else {
