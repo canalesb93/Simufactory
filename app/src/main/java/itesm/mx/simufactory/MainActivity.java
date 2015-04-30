@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -66,6 +67,7 @@ public class MainActivity extends ActionBarActivity {
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase sessionsRef = ref.child("sessions");
 
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
         sessionsRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
