@@ -1,14 +1,14 @@
 package itesm.mx.simufactory;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -38,9 +38,10 @@ public class SessionActivity extends ActionBarActivity {
 
         final ListView usersListView = (ListView) findViewById(R.id.teamnamesListView);
         final Button startSession = (Button) findViewById(R.id.startSessionButton);
-
+        final EditText timerConfig = (EditText) findViewById(R.id.timerConfig);
 
         titleTextView = (TextView) findViewById(R.id.titleSession);
+
         Bundle extras = getIntent().getExtras();
 
         if(extras!= null){
@@ -72,7 +73,7 @@ public class SessionActivity extends ActionBarActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
-//        Log.v("DEBUG test,", "testing"+ sessionRef.child("starter").)
+//      Log.v("DEBUG test,", "testing"+ sessionRef.child("starter").)
 
         if(!admin) {
             sessionRef.child("started").addValueEventListener(new ValueEventListener() {
@@ -109,23 +110,28 @@ public class SessionActivity extends ActionBarActivity {
         startSession.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(admin){
-                    sessionRef.child("started").setValue(true);
-                    Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
-                    intent.putExtra("admin", true);
-                    intent.putExtra("sessionTitle", titleString);
-                    startActivity(intent);
+            if(admin){
+                sessionRef.child("started").setValue(true);
+                Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
+                intent.putExtra("admin", true);
+                intent.putExtra("sessionTitle", titleString);
 
-                } else {
-                    Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
-                }
+                Simulation mySimulation;
+                mySimulation = createModel1();
+                if(timerConfig.getText().length() > 0)
+                    mySimulation.setTime(Long.parseLong(timerConfig.getText().toString()));
+                sessionRef.child("simulation").setValue(mySimulation);
+                startActivity(intent);
+            } else {
+                Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
+            }
             }
         });
 
     }
 
 
-    public void createModel1(){
+    public Simulation createModel1(){
         ArrayList<Operation> operations = new ArrayList<Operation>();
         operations.add(new Operation("A", 5, 0, 0, null));
         operations.add(new Operation("B", 10, 0, 0, null));
@@ -135,6 +141,7 @@ public class SessionActivity extends ActionBarActivity {
 
         operations.add(new Operation("C", 10, 35, 10000, new String[]{"P1", "P2"}));
 
-        Simulation simulation1 = new Simulation(100, 180000, operations, 3);
+        Simulation simulation1 = new Simulation(100, 10000, operations, 3);
+        return simulation1;
     }
 }

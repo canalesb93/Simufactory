@@ -53,6 +53,7 @@ public class MainActivity extends ActionBarActivity {
         final ListView sessionList = (ListView) findViewById(R.id.sessionListView);
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, sessions);
+        final ArrayAdapter<String> activeAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.activeTV, actives);
 
         final EditText name = (EditText) findViewById(R.id.sessionName);
         final EditText password = (EditText) findViewById(R.id.sessionPassword);
@@ -76,11 +77,10 @@ public class MainActivity extends ActionBarActivity {
                 sessions.add((String) snapshot.child("name").getValue());
                 passwords.add((String) snapshot.child("password").getValue());
                 if((boolean) snapshot.child("active").getValue()){
-                    actives.add("Active");
+                    actives.add("active");
                 } else {
-                    actives.add("Inactive");
+                    actives.add("inactive");
                 }
-
                 adapter.notifyDataSetChanged();
             }
 
@@ -195,7 +195,7 @@ public class MainActivity extends ActionBarActivity {
                             }
                         }
                     })
-                    .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
                             // User cancelled the dialog
                         }
