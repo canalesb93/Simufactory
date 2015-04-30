@@ -3,18 +3,20 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="235dp"
+        android:layout_width="215dp"
         android:layout_height="match_parent"
         android:text="TEXT IN HERE"
         android:id="@+id/rowTV"
         android:padding="10px"
-        android:textSize="20dp" />
+        android:textSize="20dp"/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Active"
-        android:id="@+id/activeTV"
+        android:padding="10px"
+        android:gravity="right"
         android:textSize="20dp"
-        android:gravity="right" />
+        android:id="@+id/activeTV" />
+
 </LinearLayout>
