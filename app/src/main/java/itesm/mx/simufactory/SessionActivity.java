@@ -111,16 +111,18 @@ public class SessionActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
             if(admin){
-                sessionRef.child("started").setValue(true);
-                Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
-                intent.putExtra("admin", true);
-                intent.putExtra("sessionTitle", titleString);
-
                 Simulation mySimulation;
                 mySimulation = createModel1();
                 if(timerConfig.getText().length() > 0)
                     mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
                 sessionRef.child("simulation").setValue(mySimulation);
+
+                sessionRef.child("started").setValue(true);
+
+                Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
+                intent.putExtra("admin", true);
+                intent.putExtra("sessionTitle", titleString);
+
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
