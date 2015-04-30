@@ -167,4 +167,9 @@ public class SessionActivity extends ActionBarActivity {
         Simulation simulation1 = new Simulation(100, 10000, operations, 3);
         return simulation1;
     }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Can't go back while session is running", Toast.LENGTH_SHORT).show();
+    }
 }

@@ -113,6 +113,8 @@ public class TeamActivity extends MasterActivity {
         operationLV.setOnItemClickListener(itemListener);
 
 
+
+
 //        Button b = (Button) findViewById(R.id.button);
 //        b.setText("start");
 //        b.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +132,11 @@ public class TeamActivity extends MasterActivity {
 //                }
 //            }
 //        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Can't go back while session is running", Toast.LENGTH_SHORT).show();
     }
 
 
