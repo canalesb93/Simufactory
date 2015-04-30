@@ -23,7 +23,7 @@ public class OperationActivity extends MasterActivity {
 
         if(extras!= null){
             currentOperation= extras.getString("operationName");
-            titleTextView.setText("Operation" + currentOperation);
+            titleTextView.setText("Operation " + currentOperation);
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }

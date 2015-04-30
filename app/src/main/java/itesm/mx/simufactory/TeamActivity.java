@@ -34,8 +34,8 @@ public class TeamActivity extends MasterActivity {
         setContentView(R.layout.activity_team);
 
         timerTextView = (TextView) findViewById(R.id.mainTimer);
+        TextView teamName = (TextView) findViewById(R.id.teamNameTV);
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
-
 
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -45,13 +45,16 @@ public class TeamActivity extends MasterActivity {
         if(extras!= null){
             titleString = extras.getString("sessionTitle");
             admin = extras.getBoolean("admin");
+            if(extras.get("name") != null)
+                userName = extras.getString("name");
+            teamName.setText("Team " + userName);
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }
 
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
-        final Firebase usersRef = ref.child("sessions/"+titleString+"/users");
+        final Firebase userRef = ref.child("sessions/"+titleString+"/users/"+userName);
         sessionRef = ref.child("sessions/"+titleString);
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
@@ -64,6 +67,17 @@ public class TeamActivity extends MasterActivity {
              public void onCancelled(FirebaseError firebaseError) {}
         });
 
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+//                endTime = (long) snapshot.child("time").getValue();
+            }
+
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
+
+
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, operations);
 
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
@@ -71,6 +85,7 @@ public class TeamActivity extends MasterActivity {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 operations.add((String) snapshot.child("name").getValue());
+
                 operationsAdapter.notifyDataSetChanged();
 
             }
