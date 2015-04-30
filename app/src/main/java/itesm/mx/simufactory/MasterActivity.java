@@ -33,7 +33,7 @@ public abstract class MasterActivity extends ActionBarActivity {
                 long millis = System.currentTimeMillis() - startTime;
                 int seconds = (int) (millis / 1000);
                 int minutes = seconds / 60;
-                if(millis >= endTime && !first){
+                if(millis > endTime && !first){
                     first = true;
                     timerHandler.removeCallbacks(timerRunnable);
                     Intent intent = new Intent(MasterActivity.this, SummaryActivity.class);
@@ -43,6 +43,7 @@ public abstract class MasterActivity extends ActionBarActivity {
                         sessionRef.child("active").setValue(false);
                     }
                     startActivity(intent);
+                    return;
                 }
                 seconds = seconds % 60;
                 timerTextView.setText(String.format("%02d:%02d", minutes, seconds));

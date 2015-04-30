@@ -7,17 +7,24 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class TeamActivity extends MasterActivity {
+
+    final ArrayList<String> operations = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -25,6 +32,8 @@ public class TeamActivity extends MasterActivity {
         setContentView(R.layout.activity_team);
 
         timerTextView = (TextView) findViewById(R.id.mainTimer);
+        final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
+
 
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -51,7 +60,27 @@ public class TeamActivity extends MasterActivity {
              }
 
             public void onCancelled(FirebaseError firebaseError) {}
-         });
+        });
+
+        final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, operations);
+
+        simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                operations.add((String) snapshot.child("name").getValue());
+                operationsAdapter.notifyDataSetChanged();
+
+            }
+
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
+        operationLV.setAdapter(operationsAdapter);
+        registerForContextMenu(operationLV);
 
 //        Button b = (Button) findViewById(R.id.button);
 //        b.setText("start");

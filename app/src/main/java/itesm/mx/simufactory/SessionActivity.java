@@ -119,7 +119,7 @@ public class SessionActivity extends ActionBarActivity {
                 Simulation mySimulation;
                 mySimulation = createModel1();
                 if(timerConfig.getText().length() > 0)
-                    mySimulation.setTime(Long.parseLong(timerConfig.getText().toString()));
+                    mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
                 sessionRef.child("simulation").setValue(mySimulation);
                 startActivity(intent);
             } else {
