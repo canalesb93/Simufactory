@@ -34,8 +34,8 @@ public class TeamActivity extends MasterActivity {
         setContentView(R.layout.activity_team);
 
         timerTextView = (TextView) findViewById(R.id.mainTimer);
+        TextView teamName = (TextView) findViewById(R.id.teamNameTV);
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
-
 
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -45,6 +45,9 @@ public class TeamActivity extends MasterActivity {
         if(extras!= null){
             titleString = extras.getString("sessionTitle");
             admin = extras.getBoolean("admin");
+            if(extras.get("name") != null)
+                userName = extras.getString("name");
+            teamName.setText("Team " + userName);
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }
@@ -71,6 +74,7 @@ public class TeamActivity extends MasterActivity {
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 operations.add((String) snapshot.child("name").getValue());
+
                 operationsAdapter.notifyDataSetChanged();
 
             }

@@ -28,6 +28,7 @@ public class SessionActivity extends ActionBarActivity {
     final int REQUEST_CODE = 1;
     TextView titleTextView;
     String titleString = "No title";
+    String userName = "noname";
     boolean admin = false;
 
     final ArrayList<String> users = new ArrayList<String>();
@@ -44,8 +45,6 @@ public class SessionActivity extends ActionBarActivity {
         final EditText expensesConfig = (EditText) findViewById(R.id.expensesET);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
 
-
-
         titleTextView = (TextView) findViewById(R.id.titleSession);
 
         Bundle extras = getIntent().getExtras();
@@ -55,6 +54,7 @@ public class SessionActivity extends ActionBarActivity {
         if(extras!= null){
             titleString = extras.getString("sessionTitle");
             admin = extras.getBoolean("admin");
+            userName = extras.getString("name");
             titleTextView.setText(titleString);
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
@@ -97,6 +97,7 @@ public class SessionActivity extends ActionBarActivity {
                     if (dataSnapshot.getValue().toString() == "true") {
                         Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
                         intent.putExtra("admin", false);
+                        intent.putExtra("name", userName);
                         intent.putExtra("sessionTitle", titleString);
                         startActivity(intent);
                     }

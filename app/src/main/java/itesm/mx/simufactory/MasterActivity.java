@@ -18,6 +18,7 @@ public abstract class MasterActivity extends ActionBarActivity {
     long endTime = 15000;
 
     String titleString = "No title";
+    String userName = "Admin";
     boolean admin = false;
     boolean first = false;
     Simulation mySimulation;
@@ -38,6 +39,7 @@ public abstract class MasterActivity extends ActionBarActivity {
                     timerHandler.removeCallbacks(timerRunnable);
                     Intent intent = new Intent(MasterActivity.this, SummaryActivity.class);
                     intent.putExtra("admin", admin);
+                    intent.putExtra("name", userName);
                     intent.putExtra("sessionTitle", titleString);
                     if(admin){
                         sessionRef.child("active").setValue(false);

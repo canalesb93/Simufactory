@@ -193,6 +193,8 @@ public class MainActivity extends ActionBarActivity {
                                 Intent intent = new Intent(MainActivity.this, SessionActivity.class);
                                 intent.putExtra("admin", false);
                                 intent.putExtra("sessionTitle", pressedSession);
+                                intent.putExtra("name", userName.getText().toString());
+
                                 startActivity(intent);
                             }
                         }
