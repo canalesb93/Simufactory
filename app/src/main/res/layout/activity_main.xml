@@ -23,29 +23,34 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sessionPassword"
-        android:hint="Password"
-        android:layout_below="@+id/sessionName"
-        android:layout_alignEnd="@+id/sessionName"
-        android:layout_alignStart="@+id/sessionName" />
+        android:id="@+id/sessionName"
+        android:hint="Name"
+        android:layout_below="@id/title"
+        android:layout_alignRight="@+id/sessionListView"
+        android:layout_alignEnd="@+id/sessionListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sessionName"
-        android:hint="Name"
-        android:layout_below="@+id/title"
+        android:id="@+id/sessionPassword"
+        android:hint="Password"
+        android:layout_below="@+id/sessionName"
+        android:layout_alignRight="@+id/sessionName"
+        android:layout_alignEnd="@+id/sessionName"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Crear Sesion"
+        android:text="Create Session"
         android:id="@+id/newSessionButton"
         android:layout_below="@+id/sessionPassword"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/sessionListView"
+        android:layout_alignEnd="@+id/sessionListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
