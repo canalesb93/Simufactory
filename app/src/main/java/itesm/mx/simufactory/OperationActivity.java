@@ -4,14 +4,31 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
-public class OperationActivity extends ActionBarActivity {
+public class OperationActivity extends MasterActivity {
+
+    String currentOperation = "No name";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
+
+        TextView titleTextView = (TextView) findViewById(R.id.operationNameTV);
+
+
+
+        Bundle extras = getIntent().getExtras();
+
+        if(extras!= null){
+            currentOperation= extras.getString("operationName");
+            titleTextView.setText("Operation" + currentOperation);
+        } else {
+            Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

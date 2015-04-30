@@ -1,5 +1,6 @@
 package itesm.mx.simufactory;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -59,7 +61,7 @@ public class TeamActivity extends MasterActivity {
                  endTime = (long) snapshot.child("time").getValue();
              }
 
-            public void onCancelled(FirebaseError firebaseError) {}
+             public void onCancelled(FirebaseError firebaseError) {}
         });
 
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, operations);
@@ -81,6 +83,20 @@ public class TeamActivity extends MasterActivity {
 
         operationLV.setAdapter(operationsAdapter);
         registerForContextMenu(operationLV);
+
+        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                String pressedOperation = operations.get(position);
+
+                Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
+                intent.putExtra("operationName", pressedOperation);
+
+                startActivity(intent);
+            }
+        };
+        operationLV.setOnItemClickListener(itemListener);
+
 
 //        Button b = (Button) findViewById(R.id.button);
 //        b.setText("start");
