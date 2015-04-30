@@ -70,10 +70,12 @@ public class TeamActivity extends MasterActivity {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-//                endTime = (long) snapshot.child("time").getValue();
+                if(snapshot.child("teamId").getValue() != null)
+                    teamId = (int) snapshot.child("teamId").getValue();
             }
 
-            public void onCancelled(FirebaseError firebaseError) {}
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
 
 
@@ -84,10 +86,10 @@ public class TeamActivity extends MasterActivity {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                operations.add((String) snapshot.child("name").getValue());
-
-                operationsAdapter.notifyDataSetChanged();
-
+                if((long) snapshot.child("team").getValue() == (long) teamId || teamId == 0) {
+                    operations.add((String) snapshot.child("name").getValue());
+                    operationsAdapter.notifyDataSetChanged();
+                }
             }
 
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
