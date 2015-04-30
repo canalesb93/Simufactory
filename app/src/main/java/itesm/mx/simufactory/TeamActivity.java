@@ -71,7 +71,7 @@ public class TeamActivity extends MasterActivity {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
                 if(snapshot.child("teamId").getValue() != null)
-                    teamId = (int) snapshot.child("teamId").getValue();
+                    teamId = (long) snapshot.child("teamId").getValue();
             }
 
             public void onCancelled(FirebaseError firebaseError) {
