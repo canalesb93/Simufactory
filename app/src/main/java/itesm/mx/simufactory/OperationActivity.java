@@ -19,8 +19,6 @@ public class OperationActivity extends MasterActivity {
 
         TextView titleTextView = (TextView) findViewById(R.id.operationNameTV);
 
-
-
         Bundle extras = getIntent().getExtras();
 
         if(extras!= null){

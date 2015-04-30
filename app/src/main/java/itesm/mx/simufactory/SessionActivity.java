@@ -133,13 +133,13 @@ public class SessionActivity extends ActionBarActivity {
 
     public Simulation createModel1(){
         ArrayList<Operation> operations = new ArrayList<Operation>();
-        operations.add(new Operation("A", 5, 0, 0, null));
-        operations.add(new Operation("B", 10, 0, 0, null));
+        operations.add(new Operation("A", 5, 0, 0, 0, null));
+        operations.add(new Operation("B", 10, 0, 0, 0, null));
 
-        operations.add(new Operation("P1", 10, 0, 5000, new String[]{"A"}));
-        operations.add(new Operation("P2", 20, 0, 7500, new String[]{"B"}));
+        operations.add(new Operation("P1", 10, 0, 5000, 1, new String[]{"A"}));
+        operations.add(new Operation("P2", 20, 0, 7500, 2,new String[]{"B"}));
 
-        operations.add(new Operation("C", 10, 35, 10000, new String[]{"P1", "P2"}));
+        operations.add(new Operation("C", 10, 35, 10000, 3, new String[]{"P1", "P2"}));
 
         Simulation simulation1 = new Simulation(100, 10000, operations, 3);
         return simulation1;

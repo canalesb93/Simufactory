@@ -11,15 +11,21 @@ public class Operation {
     int cost;
     int gain;
     long time;
+    int team;
     String[] requires;
 
-    public Operation(String name, int cost, int gain, long time, String[] requires) {
+    public Operation(String name, int cost, int gain, long time, int team, String[] requires) {
         this.name = name;
         this.cost = cost;
         this.gain = gain;
         this.time = time;
+        this.team = team;
         this.requires = requires;
     }
+
+    public int getTeam() { return team; }
+
+    public void setTeam(int team) { this.team = team; }
 
     public String getName() {
         return name;
