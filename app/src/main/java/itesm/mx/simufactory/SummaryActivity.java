@@ -4,36 +4,22 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class OperationActivity extends MasterActivity {
-
-    String currentOperation = "No name";
+public class SummaryActivity extends ActionBarActivity {
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_operation);
-
-        TextView titleTextView = (TextView) findViewById(R.id.operationNameTV);
-
-        Bundle extras = getIntent().getExtras();
-
-        if(extras!= null){
-            currentOperation= extras.getString("operationName");
-            titleTextView.setText("Operation " + currentOperation);
-        } else {
-            Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
-        }
+        setContentView(R.layout.activity_summary);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_operation, menu);
+        getMenuInflater().inflate(R.menu.menu_summary, menu);
         return true;
     }
 
@@ -50,5 +36,10 @@ public class OperationActivity extends MasterActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Can't go back while session is running", Toast.LENGTH_SHORT).show();
     }
 }

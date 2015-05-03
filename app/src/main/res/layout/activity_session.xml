@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/teamnamesListView"
-        android:layout_below="@+id/textView6"
+        android:layout_below="@+id/configTeamsTV"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -36,8 +36,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Time:"
-        android:id="@+id/textView2"
+        android:text="Time"
+        android:id="@+id/timeTV"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -46,21 +46,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="time"
-        android:ems="10"
-        android:id="@+id/editText2"
+
+        android:id="@+id/timerConfig"
+        android:hint="in seconds"
         android:layout_below="@+id/textView"
-        android:layout_alignRight="@+id/textView5"
-        android:layout_alignEnd="@+id/textView5"
-        android:layout_toEndOf="@+id/textView3"
-        android:layout_toRightOf="@+id/textView3" />
+        android:layout_alignRight="@+id/expensesTV"
+        android:layout_alignEnd="@+id/expensesTV"
+        android:layout_toEndOf="@+id/budgeTV"
+        android:layout_toRightOf="@+id/budgeTV" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Budget:"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/editText2"
+        android:id="@+id/budgeTV"
+        android:layout_below="@+id/timerConfig"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -69,21 +70,21 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText3"
-        android:layout_below="@+id/editText2"
-        android:layout_alignRight="@+id/editText2"
-        android:layout_alignEnd="@+id/editText2"
-        android:layout_toRightOf="@+id/textView3"
-        android:layout_toEndOf="@+id/textView3" />
+        android:id="@+id/budgetET"
+        android:layout_below="@+id/timerConfig"
+        android:layout_alignRight="@+id/timerConfig"
+        android:layout_alignEnd="@+id/timerConfig"
+        android:layout_toRightOf="@+id/budgeTV"
+        android:layout_toEndOf="@+id/budgeTV" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Model"
-        android:id="@+id/textView4"
+        android:id="@+id/modelTV"
         android:layout_marginTop="35dp"
-        android:layout_below="@+id/textView3"
+        android:layout_below="@+id/budgeTV"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -92,19 +93,19 @@
         android:layout_height="wrap_content"
         android:id="@+id/spinner"
         android:spinnerMode="dropdown"
-        android:layout_below="@+id/textView4"
+        android:layout_below="@+id/modelTV"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/textView5"
-        android:layout_toStartOf="@+id/textView5" />
+        android:layout_toLeftOf="@+id/expensesTV"
+        android:layout_toStartOf="@+id/expensesTV" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Weekly Expenses"
-        android:id="@+id/textView5"
-        android:layout_alignTop="@+id/textView4"
+        android:id="@+id/expensesTV"
+        android:layout_alignTop="@+id/modelTV"
         android:layout_alignRight="@+id/teamnamesListView"
         android:layout_alignEnd="@+id/teamnamesListView" />
 
@@ -113,19 +114,19 @@
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText4"
-        android:layout_below="@+id/textView5"
+        android:id="@+id/expensesET"
+        android:layout_below="@+id/expensesTV"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignLeft="@+id/textView5"
-        android:layout_alignStart="@+id/textView5" />
+        android:layout_alignLeft="@+id/expensesTV"
+        android:layout_alignStart="@+id/expensesTV" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Teams"
-        android:id="@+id/textView6"
+        android:id="@+id/configTeamsTV"
         android:layout_below="@+id/startSessionButton"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp" />
@@ -135,9 +136,9 @@
         android:layout_height="wrap_content"
         android:text="Start"
         android:id="@+id/startSessionButton"
-        android:layout_below="@+id/editText4"
-        android:layout_alignRight="@+id/editText4"
-        android:layout_alignEnd="@+id/editText4"
+        android:layout_below="@+id/expensesET"
+        android:layout_alignRight="@+id/expensesET"
+        android:layout_alignEnd="@+id/expensesET"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_marginTop="10dp"

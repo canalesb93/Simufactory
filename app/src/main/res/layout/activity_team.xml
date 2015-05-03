@@ -11,8 +11,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Team 1"
-        android:id="@+id/textView14"
+        android:text="Team"
+        android:id="@+id/teamNameTV"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -32,7 +32,7 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_below="@+id/textView14"
+        android:layout_below="@+id/teamNameTV"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:weightSum="1"
@@ -86,8 +86,7 @@
         <ListView
             android:layout_width="match_parent"
             android:layout_height="322dp"
-            android:id="@+id/listView2" />
-
+            android:id="@+id/operationsLV" />
     </LinearLayout>
 
 </RelativeLayout>

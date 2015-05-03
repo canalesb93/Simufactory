@@ -24,9 +24,11 @@
         android:layout_marginRight="4dp"
         android:layout_marginBottom="4dp"
         android:hint="Nombre de Equipo"
+        android:textColorHint="#808080"
         android:textColor="#000"
         android:paddingLeft="20dp"
         android:paddingRight="20dp" />
+
     <EditText
         android:id="@+id/password"
         android:inputType="textPassword"
@@ -38,6 +40,7 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="sans-serif"
         android:hint="Clave de sesion"
+        android:textColorHint="#808080"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:password="true" />

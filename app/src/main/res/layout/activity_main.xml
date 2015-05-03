@@ -5,13 +5,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <TextView android:text="Simufactory" android:layout_width="wrap_content"
+    <TextView
+        android:text="Simufactory"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/title"
         android:textAlignment="center"
         android:textSize="20sp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/sessionName" />
+        android:layout_centerHorizontal="true" />
 
     <ListView
         android:layout_width="wrap_content"
@@ -23,27 +25,34 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sessionPassword"
-        android:hint="Password"
-        android:layout_below="@+id/sessionName"
-        android:layout_alignEnd="@+id/sessionName"
-        android:layout_alignStart="@+id/sessionName" />
+        android:id="@+id/sessionName"
+        android:hint="Name"
+        android:layout_below="@id/title"
+        android:layout_alignRight="@+id/sessionListView"
+        android:layout_alignEnd="@+id/sessionListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/sessionName"
-        android:hint="Name"
-        android:layout_below="@id/title"
-        android:layout_alignEnd="@+id/newSessionButton"
-        android:layout_alignStart="@+id/newSessionButton" />
+        android:id="@+id/sessionPassword"
+        android:hint="Password"
+        android:layout_below="@+id/sessionName"
+        android:layout_alignRight="@+id/sessionName"
+        android:layout_alignEnd="@+id/sessionName"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Crear Sesion"
+        android:text="Create Session"
         android:id="@+id/newSessionButton"
         android:layout_below="@+id/sessionPassword"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignRight="@+id/sessionListView"
+        android:layout_alignEnd="@+id/sessionListView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
