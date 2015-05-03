@@ -107,22 +107,30 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="150dp"
             android:id="@+id/operationsLV"
             android:fastScrollAlwaysVisible="false"
             android:fastScrollEnabled="false"
             android:choiceMode="singleChoice" />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Buy Resources"
+            android:id="@+id/buyResourcesButton"
+            android:layout_gravity="center_horizontal" />
+
     </LinearLayout>
 
-    <DigitalClock
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/digitalClock"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="BUDGET$"
+        android:id="@+id/currentBudgetTV"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/mainTimer"
-        android:textSize="20dp" />
+        android:layout_alignBottom="@+id/mainTimer" />
 
 </RelativeLayout>

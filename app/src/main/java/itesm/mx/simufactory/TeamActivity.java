@@ -86,7 +86,7 @@ public class TeamActivity extends MasterActivity {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                if((long) snapshot.child("team").getValue() == (long) teamId || teamId == 0) {
+                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
                     operations.add((String) snapshot.child("name").getValue());
                     operationsAdapter.notifyDataSetChanged();
                 }

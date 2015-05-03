@@ -25,7 +25,7 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     Firebase sessionRef = null;
 
-    int teamId = 0;
+    long teamId = 0;
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
