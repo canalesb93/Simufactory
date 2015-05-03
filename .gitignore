@@ -1,7 +1,6 @@
 .gradle
 /local.properties
-/.idea/workspace.xml
-/.idea/libraries
+
 .DS_Store
 /build
 =======
@@ -79,6 +78,8 @@ gen-external-apklibs
 
 # User-specific stuff:
 # .idea/workspace.xml
+/.idea/workspace.xml
+/.idea/libraries
 # .idea/tasks.xml
 # .idea/dictionaries
 
