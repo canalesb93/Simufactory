@@ -156,6 +156,7 @@ public class SessionActivity extends ActionBarActivity {
 
     public Simulation createModel1(){
         ArrayList<Operation> operations = new ArrayList<Operation>();
+        /// RESOURCE, COST, GAIN, TIME, TEAMID, REQUIRED
         operations.add(new Operation("A", 5, 0, 0, 0, null));
         operations.add(new Operation("B", 10, 0, 0, 0, null));
 
@@ -164,6 +165,7 @@ public class SessionActivity extends ActionBarActivity {
 
         operations.add(new Operation("C", 10, 35, 10000, 3, new String[]{"P1", "P2"}));
 
+        //CASH, TIME, OPERATIONS, NUM OF TEAMS
         Simulation simulation1 = new Simulation(100, 10000, operations, 3);
         return simulation1;
     }

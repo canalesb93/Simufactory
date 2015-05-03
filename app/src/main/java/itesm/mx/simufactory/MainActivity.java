@@ -144,7 +144,6 @@ public class MainActivity extends ActionBarActivity {
             }
         };
         sessionList.setOnItemClickListener(itemListener);
-
     }
 
     @Override
