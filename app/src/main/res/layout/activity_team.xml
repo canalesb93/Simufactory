@@ -38,7 +38,7 @@
         android:layout_alignParentStart="true"
         android:weightSum="1"
         android:id="@+id/linearLayout"
-        android:layout_alignParentBottom="true">
+        android:layout_above="@+id/buyResourcesButton">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -78,8 +78,14 @@
             </LinearLayout>
 
             <GridLayout
-                android:layout_width="match_parent"
+                android:layout_width="144dp"
                 android:layout_height="match_parent"></GridLayout>
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/resourcesLV"
+                android:choiceMode="none" />
         </LinearLayout>
 
         <TextView
@@ -107,18 +113,11 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="match_parent"
             android:id="@+id/operationsLV"
             android:fastScrollAlwaysVisible="false"
             android:fastScrollEnabled="false"
             android:choiceMode="singleChoice" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Buy Resources"
-            android:id="@+id/buyResourcesButton"
-            android:layout_gravity="center_horizontal" />
 
     </LinearLayout>
 
@@ -132,5 +131,14 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_alignBottom="@+id/mainTimer" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Buy Resources"
+        android:id="@+id/buyResourcesButton"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
