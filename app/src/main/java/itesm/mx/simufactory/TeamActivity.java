@@ -85,7 +85,6 @@ public class TeamActivity extends MasterActivity {
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
         final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
 
-
         simulationRef.child("money").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -160,6 +159,7 @@ public class TeamActivity extends MasterActivity {
                 int index = Integer.parseInt(snapshot.getKey().toString());
                 allOperations.set(index, g.getSimulation().getOperations().get(index).getName() + " - " + snapshot.child("amount").getValue().toString());
                 allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
+                g.getSimulation().getOperations().get(index).setAmount(Integer.parseInt(snapshot.child("amount").getValue().toString()));
 
                 resourcesAdapter.notifyDataSetChanged();
 

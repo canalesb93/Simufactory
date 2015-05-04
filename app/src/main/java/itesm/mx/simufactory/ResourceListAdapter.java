@@ -36,8 +36,10 @@ public class ResourceListAdapter extends ArrayAdapter<String> {
         TextView nameTV = (TextView) rowView.findViewById(R.id.resourcesRowTV);
         TextView amountTV = (TextView) rowView.findViewById(R.id.resourcesAmountRowTV);
 
-        nameTV.setText((String) resourceName.get(position));
-        amountTV.setText(amounts.get(position).toString());
+        if(amounts.size()>0) {
+            nameTV.setText((String) resourceName.get(position));
+            amountTV.setText(amounts.get(position).toString());
+        }
 //        if (amounts.get(position).equals("active")){
 //            amountTV.setTextColor(Color.rgb(36, 152, 40));
 //        } else {

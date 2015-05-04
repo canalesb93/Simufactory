@@ -250,14 +250,14 @@ public class SessionActivity extends ActionBarActivity {
         ArrayList<Operation> operations = new ArrayList<Operation>();
         ArrayList<Machine> machines = new ArrayList<Machine>();
 
-        /// RESOURCE, COST, GAIN, TIME, TEAMID, REQUIRED, AMOUNT ( owned )
-        operations.add(new Operation("A", 5, 0, 0, 0, null, 3));
-        operations.add(new Operation("B", 10, 0, 0, 0, null, 3));
+        /// RESOURCE, ID, COST, GAIN, TIME, TEAMID, REQUIRED, AMOUNT ( owned )
+        operations.add(new Operation("A", 0, 5, 0, 0, 0, null, 3));
+        operations.add(new Operation("B", 1, 10, 0, 0, 0, null, 3));
 
-        operations.add(new Operation("P1", 10, 0, 5000, 1, new ArrayList<Integer>(Arrays.asList(0)), 0));
-        operations.add(new Operation("P2", 20, 0, 7500, 2, new ArrayList<Integer>(Arrays.asList(1)), 0));
+        operations.add(new Operation("P1", 2, 10, 0, 5000, 1, new ArrayList<Integer>(Arrays.asList(0)), 0));
+        operations.add(new Operation("P2", 3, 20, 0, 7500, 2, new ArrayList<Integer>(Arrays.asList(1)), 0));
 
-        operations.add(new Operation("C", 10, 35, 10000, 3, new ArrayList<Integer>(Arrays.asList(2, 3)), 0));
+        operations.add(new Operation("C", 4, 10, 35, 10000, 3, new ArrayList<Integer>(Arrays.asList(2, 3)), 0));
 
         machines.add(new Machine("Machine 1", 1));
         machines.add(new Machine("Machine 2", 1));

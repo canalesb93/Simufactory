@@ -8,6 +8,7 @@ import java.util.ArrayList;
  */
 public class Operation {
     String name;
+    int id;
     int cost;
     int gain;
     long time;
@@ -15,14 +16,23 @@ public class Operation {
     ArrayList<Integer> requires;
     int amount;
 
-    public Operation(String name, int cost, int gain, long time, int team, ArrayList<Integer> requires, int amount) {
+    public Operation(String name, int id, int cost, int gain, long time, int team, ArrayList<Integer> requires, int amount) {
         this.name = name;
+        this.id= id;
         this.cost = cost;
         this.gain = gain;
         this.time = time;
         this.team = team;
         this.requires = requires;
         this.amount = amount;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setAmount(int amount) { this.amount = amount;  }

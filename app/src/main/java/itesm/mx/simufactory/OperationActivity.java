@@ -18,8 +18,13 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class OperationActivity extends ActionBarActivity {
@@ -69,40 +74,32 @@ public class OperationActivity extends ActionBarActivity {
 
         actualOperation = g.getSimulation().getOperations().get(operationPosition);
         Log.v("TEST", actualOperation.getName());
-        final ArrayAdapter<String> requiredResourcesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, requiredResources);
         final ResourceListAdapter requiredAdapter = new ResourceListAdapter(this, requiredResources, operationsAmount);
 
         for( int i : actualOperation.getRequires()){
             requiredResources.add(g.getSimulation().getOperations().get(i).getName());
+            operationsAmount.add(g.getSimulation().getOperations().get(i).getAmount());
+
+            final int reqOpPosition = i;
+
+            simulationRef.child("operations/"+g.getSimulation().getOperations().get(i).getId()+"/amount").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    int amount = Integer.parseInt(dataSnapshot.getValue().toString());
+                    operationsAmount.set(reqOpPosition, amount);
+                    Log.v("CHANGED", reqOpPosition+" amount is " + amount);
+                    requiredAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                    Log.v("CANCELLED", "Session: " + firebaseError.getMessage());
+                }
+            });
         }
 
-//        simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
-//            // Retrieve new posts as they are added to Firebase
-//            @Override
-//            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-//                if(((long) snapshot.child("team").getValue() == teamId || teamId == 0) && Integer.parseInt(snapshot.child("time").getValue().toString()) != 0) {
-//                    operations.add((String) snapshot.child("name").getValue());
-//                    operationsAdapter.notifyDataSetChanged();
-//                }
-//
-//                allOperationsAmount.add(Integer.parseInt(snapshot.child("amount").getValue().toString()));
-//
-//            }
-//
-//            public void onChildChanged(DataSnapshot snapshot, String s) {
-//                int index = Integer.parseInt(snapshot.getKey().toString());
-//                allOperations.set(index, g.getSimulation().getOperations().get(index).getName() + " - " + snapshot.child("amount").getValue().toString());
-//                allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
-//
-//                resourcesAdapter.notifyDataSetChanged();
-//
-//            }
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-//            public void onCancelled(FirebaseError firebaseError) {}
-//        });
 
-        requiredResourcesLV.setAdapter(requiredResourcesAdapter);
+        requiredResourcesLV.setAdapter(requiredAdapter);
 
 
         Button startMachineButton = (Button) findViewById(R.id.startMachineButton);
@@ -114,17 +111,41 @@ public class OperationActivity extends ActionBarActivity {
                 amountToProduce = Integer.parseInt(unitsToProduce.getText().toString());
                 long millis = System.currentTimeMillis() - g.getStartTime();
                 Machine temp = g.getSimulation().getMachines().get(currentMachine);
-
+                temp.setCurrentResource(operationPosition);
                 for (int i = 0; i < amountToProduce; i++) {
                     millis = millis + actualOperation.getTime();
                     Log.v("MILLIS", millis+" ");
                     temp.addTime(millis);
                 }
+
+                simulationRef.child("operations/"+operationPosition+"/amount").runTransaction(new Transaction.Handler() {
+                    @Override
+                    public Transaction.Result doTransaction(MutableData currentData) {
+                        if(currentData.getValue() == null) {
+                            currentData.setValue(0);
+                        } else {
+                            currentData.setValue((Long) currentData.getValue() - 1);
+                        }
+                        return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+                    }
+                    @Override
+                    public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                        //This method will be called once with the results of the transaction.
+                    }
+                });
             }
         });
 
 
 
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        requiredResources.clear();
+        operationsAmount.clear();
+        super.onBackPressed();
     }
 
 }
