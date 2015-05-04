@@ -22,6 +22,7 @@ import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class SessionActivity extends ActionBarActivity {
@@ -31,6 +32,8 @@ public class SessionActivity extends ActionBarActivity {
     String userName = "noname";
     boolean admin = false;
     Simulation simu;
+    Simulation mySimulation;
+
 
     final ArrayList<String> users = new ArrayList<String>();
     int teamCounter = 1;
@@ -102,11 +105,18 @@ public class SessionActivity extends ActionBarActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.v("CHANGED", "Session started: " + dataSnapshot.getValue().toString());
                     if (dataSnapshot.getValue().toString() == "true") {
+
+
+                        //pending selection
+                        Globals g = Globals.getInstance();
+                        g.setSimulation(createModel1());
+
                         Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
                         intent.putExtra("admin", false);
                         intent.putExtra("name", userName);
                         intent.putExtra("sessionTitle", titleString);
                         startActivity(intent);
+
                     }
                 }
 
@@ -132,11 +142,13 @@ public class SessionActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
             if(admin){
-                Simulation mySimulation;
                 mySimulation = createModel1();
                 if(timerConfig.getText().length() > 0)
-                    mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
+                   mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
                 sessionRef.child("simulation").setValue(mySimulation);
+
+                Globals g = Globals.getInstance();
+                g.setSimulation(mySimulation);
 
                 sessionRef.child("started").setValue(true);
 
@@ -164,10 +176,10 @@ public class SessionActivity extends ActionBarActivity {
         operations.add(new Operation("A", 5, 0, 0, 0, null, 3));
         operations.add(new Operation("B", 10, 0, 0, 0, null, 3));
 
-        operations.add(new Operation("P1", 10, 0, 5000, 1, new String[]{"A"}, 0));
-        operations.add(new Operation("P2", 20, 0, 7500, 2,new String[]{"B"}, 0));
+        operations.add(new Operation("P1", 10, 0, 5000, 1, new ArrayList<Integer>(Arrays.asList(0)), 0));
+        operations.add(new Operation("P2", 20, 0, 7500, 2, new ArrayList<Integer>(Arrays.asList(1)), 0));
 
-        operations.add(new Operation("C", 10, 35, 10000, 3, new String[]{"P1", "P2"}, 0));
+        operations.add(new Operation("C", 10, 35, 10000, 3, new ArrayList<Integer>(Arrays.asList(2, 3)), 0));
 
         machines.add(new Machine("Machine 1", 1));
         machines.add(new Machine("Machine 2", 1));
@@ -181,7 +193,7 @@ public class SessionActivity extends ActionBarActivity {
         return simulation1;
     }
 
-    public Simulation getSimu(){
+    public Simulation getSimulation(){
         return simu;
     }
 

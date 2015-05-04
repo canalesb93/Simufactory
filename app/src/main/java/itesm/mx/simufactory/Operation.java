@@ -12,10 +12,10 @@ public class Operation {
     int gain;
     long time;
     int team;
-    String[] requires;
+    ArrayList<Integer> requires;
     int amount;
 
-    public Operation(String name, int cost, int gain, long time, int team, String[] requires, int amount) {
+    public Operation(String name, int cost, int gain, long time, int team, ArrayList<Integer> requires, int amount) {
         this.name = name;
         this.cost = cost;
         this.gain = gain;
@@ -24,6 +24,8 @@ public class Operation {
         this.requires = requires;
         this.amount = amount;
     }
+
+    public void setAmount(int amount) { this.amount = amount;  }
 
     public Integer getAmount() {
         return amount;
@@ -69,11 +71,11 @@ public class Operation {
         this.time = time;
     }
 
-    public String[] getRequires() {
+    public ArrayList<Integer> getRequires() {
         return requires;
     }
 
-    public void setRequires(String[] requires) {
+    public void setRequires(ArrayList<Integer> requires) {
         this.requires = requires;
     }
 }

@@ -10,7 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-public class OperationActivity extends MasterActivity {
+public class OperationActivity extends ActionBarActivity {
 
     String currentOperation = "No name";
     String currentMachine = "No machine";
@@ -33,8 +33,7 @@ public class OperationActivity extends MasterActivity {
             currentMachine = extras.getString("operationName");
             operationPosition = extras.getInt("operationPosition");
             titleTextView.setText("Operation " + currentOperation);
-            Log.v("TEXT: ", allOperationsAmount.get(0).toString());
-            //timeTextView.setText(allOperationsTime.get(operationPosition));
+
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }

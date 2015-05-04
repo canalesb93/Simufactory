@@ -32,17 +32,19 @@ public abstract class MasterActivity extends ActionBarActivity {
     long teamId = 0;
 
     final ArrayList<String> machines = new ArrayList<String>();
+    final ArrayList<Integer> myMachinesIds = new ArrayList<Integer>();
+    final ArrayList<String> allMachines = new ArrayList<String>();
 
     final ArrayList<String> allOperations = new ArrayList<String>();
+    final ArrayList<Integer> myOperationsIds = new ArrayList<Integer>();
 
-    final ArrayList<ArrayList<String>> requiredOperations= new ArrayList<ArrayList<String>>();
-
-     ArrayList<Long> allOperationsTime = new ArrayList<Long>();
-     ArrayList<String> allOperationsName = new ArrayList<String>();
-     ArrayList<Integer> allOperationsAmount = new ArrayList<Integer>();
+    final ArrayList<Integer> allOperationsAmount = new ArrayList<Integer>();
 
     final ArrayList<String> resources = new ArrayList<String>();
     final ArrayList<Integer> resourcesCost = new ArrayList<Integer>();
+
+
+    Globals g = Globals.getInstance();
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -54,6 +56,21 @@ public abstract class MasterActivity extends ActionBarActivity {
                 long millis = System.currentTimeMillis() - startTime;
                 int seconds = (int) (millis / 1000);
                 int minutes = seconds / 60;
+
+
+                // Resource generation time check
+                for( Machine m : g.getSimulation().getMachines()){
+                    int index = 0;
+                    for (long v : m.getTimes()){
+                        System.out.print(v + " ");
+                        if(millis >= v){
+                            m.removeTime(index);
+                            //add resource
+                        }
+                        index++;
+                    }
+                }
+
                 if(millis > endTime && !first){
                     first = true;
                     timerHandler.removeCallbacks(timerRunnable);

@@ -24,7 +24,8 @@ public class TeamActivity extends MasterActivity {
 
     final ArrayList<String> operations = new ArrayList<String>();
 
-    String selectedMachine = "none";
+    Integer selectedMachine = 0;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,8 +38,6 @@ public class TeamActivity extends MasterActivity {
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
-
-
 
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -100,21 +99,41 @@ public class TeamActivity extends MasterActivity {
             }
         });
 
-        simulationRef.child("machines").addChildEventListener(new ChildEventListener() {
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
-                    machines.add((String) snapshot.child("name").getValue());
-                    machinesAdapter.notifyDataSetChanged();
-                }
+        int mCounter = 0;
+        for( Machine m : g.getSimulation().getMachines()){
+            if( m.getTeam() == teamId || teamId == 0) {
+                machines.add(m.getName());
+                myMachinesIds.add(mCounter);
             }
+            allMachines.add(m.getName());
+            mCounter++;
+        }
+        machinesAdapter.notifyDataSetChanged();
 
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            public void onCancelled(FirebaseError firebaseError) {}
-        });
+//
+//        simulationRef.child("machines").addChildEventListener(new ChildEventListener() {
+//            // Retrieve new posts as they are added to Firebase
+//            @Override
+//            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+//                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
+//                    machines.add((String) snapshot.child("name").getValue());
+//                    machinesAdapter.notifyDataSetChanged();
+//                }
+//            }
+//
+//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
+//            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+//            public void onCancelled(FirebaseError firebaseError) {}
+//        });
+
+        int moCounter = 0;
+        for( Operation o : g.getSimulation().getOperations()){
+            if( o.getTeam() == teamId || teamId == 0) {
+                myOperationsIds.add(mCounter);
+            }
+            mCounter++;
+        }
 
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
@@ -122,7 +141,6 @@ public class TeamActivity extends MasterActivity {
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 if(((long) snapshot.child("team").getValue() == teamId || teamId == 0) && Integer.parseInt(snapshot.child("time").getValue().toString()) != 0) {
                     operations.add((String) snapshot.child("name").getValue());
-
                     operationsAdapter.notifyDataSetChanged();
                 }
                 if(Integer.parseInt(snapshot.child("time").getValue().toString()) == 0){
@@ -131,16 +149,7 @@ public class TeamActivity extends MasterActivity {
                 }
                 allOperations.add((String) snapshot.child("name").getValue() + " - " + snapshot.child("amount").getValue().toString());
 
-                allOperationsTime.add(Long.parseLong(snapshot.child("time").getValue().toString()));
-                Log.v("CHECK", allOperationsTime.get(0).toString());
                 allOperationsAmount.add(Integer.parseInt(snapshot.child("amount").getValue().toString()));
-                allOperationsName.add((String) snapshot.child("name").getValue());
-
-                ArrayList<String> reqOp = new ArrayList<String>();
-                for (DataSnapshot child : snapshot.child("requires").getChildren()) {
-                    reqOp.add(child.getValue().toString());
-                }
-                requiredOperations.add(reqOp);
 
                 resourcesAdapter.notifyDataSetChanged();
 
@@ -148,7 +157,7 @@ public class TeamActivity extends MasterActivity {
 
             public void onChildChanged(DataSnapshot snapshot, String s) {
                 int index = Integer.parseInt(snapshot.getKey().toString());
-                allOperations.set(index, allOperationsName.get(index) + " - " + snapshot.child("amount").getValue().toString());
+                allOperations.set(index, g.getSimulation().getOperations().get(index).getName() + " - " + snapshot.child("amount").getValue().toString());
                 allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
 
                 resourcesAdapter.notifyDataSetChanged();
@@ -171,7 +180,7 @@ public class TeamActivity extends MasterActivity {
 
                 if(!selectedMachine.equals("none")) {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
-                    intent.putExtra("selectedMachine", selectedMachine);
+                    intent.putExtra("selectedMachine", myMachinesIds.get(selectedMachine));
                     intent.putExtra("operationName", pressedOperation);
                     intent.putExtra("operationPosition", position);
 
@@ -186,7 +195,7 @@ public class TeamActivity extends MasterActivity {
         AdapterView.OnItemClickListener machineListViewListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                selectedMachine = machines.get(position);
+                selectedMachine = position;
             }
         };
         machinesLV.setOnItemClickListener(machineListViewListener);
