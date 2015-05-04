@@ -53,8 +53,8 @@ public class MainActivity extends ActionBarActivity {
         final String TAG = "SDF";
         final ListView sessionList = (ListView) findViewById(R.id.sessionListView);
 
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, sessions);
-        final ArrayAdapter<String> activeAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.activeTV, actives);
+        ////// ADAPTER
+        final CustomListAdapter activeAdapter = new CustomListAdapter (this, sessions, actives);
 
         final EditText name = (EditText) findViewById(R.id.sessionName);
         final EditText password = (EditText) findViewById(R.id.sessionPassword);
@@ -69,21 +69,21 @@ public class MainActivity extends ActionBarActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        Log.d("TAG", "AddListener!");
+
         sessionsRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 Toast.makeText(getApplicationContext(), "Session added to Firebase.", Toast.LENGTH_SHORT).show();
-//                Session mySession = (Session) snapshot.getValue();
-
                 sessions.add((String) snapshot.child("name").getValue());
                 passwords.add((String) snapshot.child("password").getValue());
                 if((boolean) snapshot.child("active").getValue()){
                     actives.add("active");
                 } else {
-                    actives.add("inactive");
+                   actives.add("inactive");
                 }
-                adapter.notifyDataSetChanged();
+                activeAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -95,24 +95,21 @@ public class MainActivity extends ActionBarActivity {
             public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
+
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
+
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
             }
 
-            //... ChildEventListener also defines onChildChanged, onChildRemoved,
-            //    onChildMoved and onCanceled, covered in later sections.
         });
 
+        sessionList.setAdapter(activeAdapter);
 
-
-//        String[] sessions = new String[]{};
-
-        sessionList.setAdapter(adapter);
         registerForContextMenu(sessionList);
 
         createSession.setOnClickListener(new View.OnClickListener(){
@@ -138,8 +135,8 @@ public class MainActivity extends ActionBarActivity {
         AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pressedSession = sessions.get(position);
-                pressedPassword = passwords.get(position);
+     //           pressedSession = sessions.get(position);
+       //         pressedPassword = passwords.get(position);
                 adLoginSession.show(getFragmentManager(), TAG );
             }
         };
