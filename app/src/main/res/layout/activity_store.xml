@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_marginTop="15dp"
+        android:layout_width="174dp"
+        android:layout_height="wrap_content"
+        android:textSize="25dp"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Resources"
+        android:id="@+id/resourcesTitleTV"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.05" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:weightSum="1">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:text="Budget:"
+            android:id="@+id/textView4"
+            android:layout_weight="0.05" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="9pt"
+            android:text="$3,000.00"
+            android:id="@+id/budgetTV" />
+    </LinearLayout>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="221dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/listView2"
+        android:layout_weight="0.82" />
+</LinearLayout>
