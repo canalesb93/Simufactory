@@ -135,8 +135,8 @@ public class MainActivity extends ActionBarActivity {
         AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-     //           pressedSession = sessions.get(position);
-       //         pressedPassword = passwords.get(position);
+                pressedSession = sessions.get(position);
+                pressedPassword = passwords.get(position);
                 adLoginSession.show(getFragmentManager(), TAG );
             }
         };
