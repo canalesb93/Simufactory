@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +27,6 @@ public class TeamActivity extends MasterActivity {
 
     Integer selectedMachine = 0;
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +39,7 @@ public class TeamActivity extends MasterActivity {
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
 
-        startTime = System.currentTimeMillis();
+        g.setStartTime(System.currentTimeMillis());
         timerHandler.postDelayed(timerRunnable, 0);
 
         Bundle extras = getIntent().getExtras();
@@ -127,12 +127,12 @@ public class TeamActivity extends MasterActivity {
 //            public void onCancelled(FirebaseError firebaseError) {}
 //        });
 
-        int moCounter = 0;
+        int oCounter = 0;
         for( Operation o : g.getSimulation().getOperations()){
-            if( o.getTeam() == teamId || teamId == 0) {
-                myOperationsIds.add(mCounter);
+            if(( o.getTeam() == teamId || teamId == 0)  && o.getTime() != 0) {
+                myOperationsIds.add(oCounter);
             }
-            mCounter++;
+            oCounter++;
         }
 
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
@@ -182,7 +182,7 @@ public class TeamActivity extends MasterActivity {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
                     intent.putExtra("selectedMachine", myMachinesIds.get(selectedMachine));
                     intent.putExtra("operationName", pressedOperation);
-                    intent.putExtra("operationPosition", position);
+                    intent.putExtra("operationPosition", myOperationsIds.get(position));
 
                     startActivity(intent);
                 } else {
@@ -201,11 +201,8 @@ public class TeamActivity extends MasterActivity {
         machinesLV.setOnItemClickListener(machineListViewListener);
         operationLV.setOnItemClickListener(operationListViewListener);
 
-
-
-
-//        Button b = (Button) findViewById(R.id.button);
-//        b.setText("start");
+//        PAUSE BUTTON
+//        Button b = (Button) findViewById(R.id.startMachineButton);
 //        b.setOnClickListener(new View.OnClickListener() {
 //
 //            @Override
@@ -221,6 +218,9 @@ public class TeamActivity extends MasterActivity {
 //                }
 //            }
 //        });
+
+
+
     }
 
     @Override

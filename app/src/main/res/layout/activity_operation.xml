@@ -48,14 +48,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Resources"
+            android:text="Required Resources"
             android:id="@+id/textView9"
             android:layout_gravity="center_horizontal" />
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="123dp"
-            android:id="@+id/listView" />
+            android:id="@+id/requiredResourcesLV"
+            android:choiceMode="none" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -75,15 +76,15 @@
                 android:layout_height="wrap_content"
                 android:inputType="number"
                 android:ems="10"
-                android:id="@+id/editText6"
+                android:id="@+id/unitsET"
                 android:layout_weight="1" />
         </LinearLayout>
 
         <Button
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Start"
-            android:id="@+id/button"
+            android:text="Start Machine"
+            android:id="@+id/startMachineButton"
             android:layout_gravity="center_horizontal" />
 
         <RadioGroup

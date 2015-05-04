@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 public abstract class MasterActivity extends ActionBarActivity {
 
     TextView timerTextView;
-    long startTime = 0;
     long endTime = 15000;
 
     int budget = 0;
@@ -53,21 +53,21 @@ public abstract class MasterActivity extends ActionBarActivity {
         @Override
         public void run() {
             if(timerTextView != null) {
-                long millis = System.currentTimeMillis() - startTime;
+                long millis = System.currentTimeMillis() - g.getStartTime();
                 int seconds = (int) (millis / 1000);
                 int minutes = seconds / 60;
 
 
                 // Resource generation time check
                 for( Machine m : g.getSimulation().getMachines()){
-                    int index = 0;
-                    for (long v : m.getTimes()){
-                        System.out.print(v + " ");
-                        if(millis >= v){
-                            m.removeTime(index);
+                    if(m.getTimeCounter() < m.getTimes().size()) {
+                        long v = m.getTimes().get(m.getTimeCounter());
+                        Log.v("MILLIS", v + " ");
+                        if (millis >= v) {
+                            Log.v("MILLIS", "FINISHED ONE GOING TO NEXT");
+                            m.addTimeCounter();
                             //add resource
                         }
-                        index++;
                     }
                 }
 

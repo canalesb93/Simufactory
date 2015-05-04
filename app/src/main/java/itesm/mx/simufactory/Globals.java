@@ -10,6 +10,7 @@ public class Globals{
 
     // Global variable
     private Simulation simulation;
+    private long startTime;
 
     // Restrict the constructor from being instantiated
     private Globals(){}
@@ -20,6 +21,14 @@ public class Globals{
 
     public void setSimulation(Simulation simulation) {
         this.simulation = simulation;
+    }
+
+    public long getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     public static synchronized Globals getInstance(){
