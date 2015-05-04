@@ -49,6 +49,7 @@
 
         android:id="@+id/timerConfig"
         android:hint="in seconds"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/textView"
         android:layout_alignRight="@+id/expensesTV"
         android:layout_alignEnd="@+id/expensesTV"
@@ -71,6 +72,7 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/budgetET"
+        android:layout_marginLeft="10dp"
         android:layout_below="@+id/timerConfig"
         android:layout_alignRight="@+id/timerConfig"
         android:layout_alignEnd="@+id/timerConfig"
