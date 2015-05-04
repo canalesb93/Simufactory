@@ -1,7 +1,9 @@
 package itesm.mx.simufactory;
 
+import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -21,10 +23,6 @@ import java.util.ArrayList;
 public class TeamActivity extends MasterActivity {
 
     final ArrayList<String> operations = new ArrayList<String>();
-
-
-    final ArrayList<String> machines = new ArrayList<String>();
-    final ArrayList<String> resources = new ArrayList<String>();
 
     String selectedMachine = "none";
 
@@ -112,9 +110,21 @@ public class TeamActivity extends MasterActivity {
 
                     operationsAdapter.notifyDataSetChanged();
                 }
+                if(Integer.parseInt(snapshot.child("time").getValue().toString()) == 0){
+                    resources.add(snapshot.child("name").getValue().toString());
+                    resourcesCost.add(Integer.parseInt(snapshot.child("cost").getValue().toString()));
+                }
                 allOperations.add((String) snapshot.child("name").getValue() + " - " + snapshot.child("amount").getValue().toString());
+
                 allOperationsTime.add(snapshot.child("time").getValue().toString());
+                allOperationsAmount.add(Integer.parseInt(snapshot.child("amount").getValue().toString()));
                 allOperationsName.add((String) snapshot.child("name").getValue());
+
+                ArrayList<String> reqOp = new ArrayList<String>();
+                for (DataSnapshot child : snapshot.child("requires").getChildren()) {
+                    reqOp.add(child.getValue().toString());
+                }
+                requiredOperations.add(reqOp);
 
                 resourcesAdapter.notifyDataSetChanged();
 
@@ -123,6 +133,7 @@ public class TeamActivity extends MasterActivity {
             public void onChildChanged(DataSnapshot snapshot, String s) {
                 int index = Integer.parseInt(snapshot.getKey().toString());
                 allOperations.set(index, allOperationsName.get(index) + " - " + snapshot.child("amount").getValue().toString());
+                allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
 
                 resourcesAdapter.notifyDataSetChanged();
 
@@ -137,18 +148,33 @@ public class TeamActivity extends MasterActivity {
         resourcesLV.setAdapter(resourcesAdapter);
         registerForContextMenu(operationLV);
 
-        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){
+        AdapterView.OnItemClickListener operationListViewListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String pressedOperation = operations.get(position);
 
-                Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
-                intent.putExtra("operationName", pressedOperation);
+                if(!selectedMachine.equals("none")) {
+                    Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
+                    intent.putExtra("selectedMachine", selectedMachine);
+                    intent.putExtra("operationName", pressedOperation);
+                    intent.putExtra("operationPosition", position);
 
-                startActivity(intent);
+                    startActivity(intent);
+                } else {
+                    Toast.makeText(getApplicationContext(), "You must select a machine", Toast.LENGTH_SHORT).show();
+                }
+
+
             }
         };
-        operationLV.setOnItemClickListener(itemListener);
+        AdapterView.OnItemClickListener machineListViewListener = new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectedMachine = machines.get(position);
+            }
+        };
+        machinesLV.setOnItemClickListener(machineListViewListener);
+        operationLV.setOnItemClickListener(operationListViewListener);
 
 
 
