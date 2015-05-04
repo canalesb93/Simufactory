@@ -33,6 +33,7 @@ public class TeamActivity extends MasterActivity {
 
         timerTextView = (TextView) findViewById(R.id.mainTimer);
         TextView teamName = (TextView) findViewById(R.id.teamNameTV);
+        final TextView currentBudget = (TextView) findViewById(R.id.currentBudgetTV);
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
@@ -85,6 +86,37 @@ public class TeamActivity extends MasterActivity {
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
         final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
 
+        simulationRef.child("money").addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+
+            }
+
+            public void onChildChanged(DataSnapshot snapshot, String s) {
+                budget = (int) snapshot.getValue();
+                currentBudget.setText(budget + "$");
+                Log.v("TEST", "Budget is "+ budget);
+            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
+        simulationRef.child("money").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                budget = Integer.parseInt(dataSnapshot.getValue().toString());
+                currentBudget.setText(budget + "$");
+                Log.v("CHANGED", "Budget is "+ budget);
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+                Log.v("CANCELLED", "Session: " + firebaseError.getMessage());
+            }
+        });
+
         simulationRef.child("machines").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
@@ -105,7 +137,7 @@ public class TeamActivity extends MasterActivity {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
+                if(((long) snapshot.child("team").getValue() == teamId || teamId == 0) && Integer.parseInt(snapshot.child("time").getValue().toString()) != 0) {
                     operations.add((String) snapshot.child("name").getValue());
 
                     operationsAdapter.notifyDataSetChanged();
