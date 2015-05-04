@@ -26,8 +26,8 @@
 
         <LinearLayout
             android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="336dp"
+            android:layout_height="31dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -36,13 +36,12 @@
                 android:text="Time:"
                 android:id="@+id/textView8" />
 
-            <EditText
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:inputType="time"
-                android:ems="10"
-                android:id="@+id/editText5"
-                android:layout_weight="1" />
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="time value"
+                android:id="@+id/tvTime" />
         </LinearLayout>
 
         <TextView

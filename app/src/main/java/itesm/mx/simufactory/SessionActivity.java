@@ -30,6 +30,7 @@ public class SessionActivity extends ActionBarActivity {
     String titleString = "No title";
     String userName = "noname";
     boolean admin = false;
+    Simulation simu;
 
     final ArrayList<String> users = new ArrayList<String>();
     int teamCounter = 1;
@@ -144,6 +145,7 @@ public class SessionActivity extends ActionBarActivity {
                 intent.putExtra("sessionTitle", titleString);
 
 
+
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
@@ -173,10 +175,14 @@ public class SessionActivity extends ActionBarActivity {
         machines.add(new Machine("Machine 4", 2));
         machines.add(new Machine("Machine 5", 3));
 
-        //CASH, TIME, OPERATIONS, NUM OF TEAMS
+        //CASH, TIME, OPERATIONS, MACHINES, NUM OF TEAMS
         Simulation simulation1 = new Simulation(100, 10000, operations, machines, 3);
-
+        this.simu = simulation1;
         return simulation1;
+    }
+
+    public Simulation getSimu(){
+        return simu;
     }
 
     @Override
