@@ -30,6 +30,10 @@ public class OperationActivity extends MasterActivity {
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }
+
+
+
+
     }
 
 }
