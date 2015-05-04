@@ -16,13 +16,13 @@ import java.util.ArrayList;
  * Created by roelcm on 5/3/15.
  */
 
-public class CustomListAdapter extends ArrayAdapter<String> {
+public class SessionListAdapter extends ArrayAdapter<String> {
 
     private final Activity context;
     private final ArrayList sessionName;
     private final ArrayList active;
 
-    public CustomListAdapter(Activity context, ArrayList<String> sessionName, ArrayList<String> active) {
+    public SessionListAdapter(Activity context, ArrayList<String> sessionName, ArrayList<String> active) {
         super(context, R.layout.activity_row, sessionName);
         // TODO Auto-generated constructor stub
 
@@ -46,6 +46,5 @@ public class CustomListAdapter extends ArrayAdapter<String> {
             activeTV.setTextColor(Color.RED);
         }
         return rowView;
-
     };
 }

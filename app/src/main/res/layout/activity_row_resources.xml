@@ -3,11 +3,23 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
-        android:layout_width="match_parent"
+        android:layout_width="191dp"
         android:layout_height="match_parent"
         android:text="TEXT IN HERE"
         android:id="@+id/resourcesRowTV"
         android:padding="10px"
         android:textSize="20dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="0"
+        android:id="@+id/resourcesAmountRowTV"
+        android:gravity="right"
+        android:paddingRight="5dp"
+        android:textSize="20dp"
+        android:textColor="#ff2aae24"
+        android:textStyle="bold" />
 
 </LinearLayout>

@@ -9,12 +9,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -24,12 +21,8 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
-import com.firebase.client.Query;
-import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -54,7 +47,7 @@ public class MainActivity extends ActionBarActivity {
         final ListView sessionList = (ListView) findViewById(R.id.sessionListView);
 
         ////// ADAPTER
-        final CustomListAdapter activeAdapter = new CustomListAdapter (this, sessions, actives);
+        final SessionListAdapter activeAdapter = new SessionListAdapter(this, sessions, actives);
 
         final EditText name = (EditText) findViewById(R.id.sessionName);
         final EditText password = (EditText) findViewById(R.id.sessionPassword);

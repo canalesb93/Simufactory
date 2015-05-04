@@ -81,9 +81,10 @@ public class TeamActivity extends MasterActivity {
         });
 
 
-        final ArrayAdapter<String> resourcesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_resources, R.id.resourcesRowTV, allOperations);
+        final ResourceListAdapter resourcesAdapter = new ResourceListAdapter(this, allOperations, allOperationsAmount);
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
         final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
+
 
         simulationRef.child("money").addValueEventListener(new ValueEventListener() {
             @Override
@@ -147,7 +148,7 @@ public class TeamActivity extends MasterActivity {
                     resources.add(snapshot.child("name").getValue().toString());
                     resourcesCost.add(Integer.parseInt(snapshot.child("cost").getValue().toString()));
                 }
-                allOperations.add((String) snapshot.child("name").getValue() + " - " + snapshot.child("amount").getValue().toString());
+                allOperations.add((String) snapshot.child("name").getValue());
 
                 allOperationsAmount.add(Integer.parseInt(snapshot.child("amount").getValue().toString()));
 
@@ -180,6 +181,8 @@ public class TeamActivity extends MasterActivity {
 
                 if(!selectedMachine.equals("none")) {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
+                    intent.putExtra("admin", false);
+                    intent.putExtra("sessionTitle", titleString);
                     intent.putExtra("selectedMachine", myMachinesIds.get(selectedMachine));
                     intent.putExtra("operationName", pressedOperation);
                     intent.putExtra("operationPosition", myOperationsIds.get(position));
