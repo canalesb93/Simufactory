@@ -156,6 +156,9 @@ public class SessionActivity extends ActionBarActivity {
 
     public Simulation createModel1(){
         ArrayList<Operation> operations = new ArrayList<Operation>();
+        ArrayList<Machine> machines = new ArrayList<Machine>();
+
+        /// RESOURCE, COST, GAIN, TIME, TEAMID, REQUIRED
         operations.add(new Operation("A", 5, 0, 0, 0, null));
         operations.add(new Operation("B", 10, 0, 0, 0, null));
 
@@ -164,7 +167,19 @@ public class SessionActivity extends ActionBarActivity {
 
         operations.add(new Operation("C", 10, 35, 10000, 3, new String[]{"P1", "P2"}));
 
-        Simulation simulation1 = new Simulation(100, 10000, operations, 3);
+        machines.add(new Machine("Machine 1", 1));
+        machines.add(new Machine("Machine 2", 1));
+        machines.add(new Machine("Machine 3", 2));
+        machines.add(new Machine("Machine 4", 2));
+        machines.add(new Machine("Machine 5", 3));
+        //CASH, TIME, OPERATIONS, NUM OF TEAMS
+        Simulation simulation1 = new Simulation(100, 10000, operations, machines, 3);
+
         return simulation1;
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Can't go back while session is running", Toast.LENGTH_SHORT).show();
     }
 }

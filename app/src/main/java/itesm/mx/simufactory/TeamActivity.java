@@ -27,6 +27,8 @@ import java.util.ArrayList;
 public class TeamActivity extends MasterActivity {
 
     final ArrayList<String> operations = new ArrayList<String>();
+    final ArrayList<String> machines = new ArrayList<String>();
+    final ArrayList<String> resources = new ArrayList<String>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +38,10 @@ public class TeamActivity extends MasterActivity {
         timerTextView = (TextView) findViewById(R.id.mainTimer);
         TextView teamName = (TextView) findViewById(R.id.teamNameTV);
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
+        final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
+        final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
+
+
 
         startTime = System.currentTimeMillis();
         timerHandler.postDelayed(timerRunnable, 0);
@@ -70,24 +76,28 @@ public class TeamActivity extends MasterActivity {
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-//                endTime = (long) snapshot.child("time").getValue();
+                if(snapshot.child("teamId").getValue() != null)
+                    teamId = (long) snapshot.child("teamId").getValue();
             }
 
-            public void onCancelled(FirebaseError firebaseError) {}
+            public void onCancelled(FirebaseError firebaseError) {
+            }
         });
 
 
 
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, operations);
+        final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_usersrow, R.id.usersrowTV, machines);
+
 
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                operations.add((String) snapshot.child("name").getValue());
-
-                operationsAdapter.notifyDataSetChanged();
-
+                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
+                    operations.add((String) snapshot.child("name").getValue());
+                    operationsAdapter.notifyDataSetChanged();
+                }
             }
 
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
@@ -113,6 +123,8 @@ public class TeamActivity extends MasterActivity {
         operationLV.setOnItemClickListener(itemListener);
 
 
+
+
 //        Button b = (Button) findViewById(R.id.button);
 //        b.setText("start");
 //        b.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +142,11 @@ public class TeamActivity extends MasterActivity {
 //                }
 //            }
 //        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(getApplicationContext(), "Can't go back while session is running", Toast.LENGTH_SHORT).show();
     }
 
 

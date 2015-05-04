@@ -9,20 +9,32 @@ public class Simulation {
     int money;
     long time;
     ArrayList<Operation> operations;
+    ArrayList<Machine> machines;
+
     int usersCount;
 
-    public Simulation(int money, long time, ArrayList<Operation> operations, int usersCount) {
+    public Simulation(int money, long time, ArrayList<Operation> operations, ArrayList<Machine> machines, int usersCount) {
         this.money = money;
         this.time = time;
         this.operations = operations;
+        this.machines = machines;
         this.usersCount = usersCount;
     }
 
-    public Simulation(int money, long time, ArrayList<Operation> operations) {
+    public Simulation(int money, long time, ArrayList<Operation> operations, ArrayList<Machine> machines) {
         this.money = money;
         this.time = time;
         this.operations = operations;
+        this.machines = machines;
         this.usersCount = 3;
+    }
+
+    public ArrayList<Machine> getMachines() {
+        return machines;
+    }
+
+    public void setMachines(ArrayList<Machine> machines) {
+        this.machines = machines;
     }
 
     public int getMoney() {
