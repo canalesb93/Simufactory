@@ -86,23 +86,6 @@ public class TeamActivity extends MasterActivity {
         final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
         final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
 
-        simulationRef.child("money").addChildEventListener(new ChildEventListener() {
-            // Retrieve new posts as they are added to Firebase
-            @Override
-            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-
-            }
-
-            public void onChildChanged(DataSnapshot snapshot, String s) {
-                budget = (int) snapshot.getValue();
-                currentBudget.setText(budget + "$");
-                Log.v("TEST", "Budget is "+ budget);
-            }
-            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-            public void onCancelled(FirebaseError firebaseError) {}
-        });
-
         simulationRef.child("money").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -148,7 +131,7 @@ public class TeamActivity extends MasterActivity {
                 }
                 allOperations.add((String) snapshot.child("name").getValue() + " - " + snapshot.child("amount").getValue().toString());
 
-                allOperationsTime.add(snapshot.child("time").getValue().toString());
+                allOperationsTime.add(Long.parseLong(snapshot.child("time").getValue().toString()));
                 allOperationsAmount.add(Integer.parseInt(snapshot.child("amount").getValue().toString()));
                 allOperationsName.add((String) snapshot.child("name").getValue());
 

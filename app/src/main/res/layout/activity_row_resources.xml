@@ -8,7 +8,6 @@
         android:text="TEXT IN HERE"
         android:id="@+id/resourcesRowTV"
         android:padding="10px"
-        android:textSize="20dp"
-        android:gravity="right" />
+        android:textSize="20dp" />
 
 </LinearLayout>
