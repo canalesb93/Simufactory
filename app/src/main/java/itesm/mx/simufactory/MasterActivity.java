@@ -37,11 +37,9 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     final ArrayList<ArrayList<String>> requiredOperations= new ArrayList<ArrayList<String>>();
 
-    ArrayList<Operation> operationsObject;
-
-    final ArrayList<Long> allOperationsTime = new ArrayList<Long>();
-    final ArrayList<String> allOperationsName = new ArrayList<String>();
-    final ArrayList<Integer> allOperationsAmount = new ArrayList<Integer>();
+     ArrayList<Long> allOperationsTime = new ArrayList<Long>();
+     ArrayList<String> allOperationsName = new ArrayList<String>();
+     ArrayList<Integer> allOperationsAmount = new ArrayList<Integer>();
 
     final ArrayList<String> resources = new ArrayList<String>();
     final ArrayList<Integer> resourcesCost = new ArrayList<Integer>();

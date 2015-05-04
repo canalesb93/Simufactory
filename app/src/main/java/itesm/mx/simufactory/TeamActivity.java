@@ -132,6 +132,7 @@ public class TeamActivity extends MasterActivity {
                 allOperations.add((String) snapshot.child("name").getValue() + " - " + snapshot.child("amount").getValue().toString());
 
                 allOperationsTime.add(Long.parseLong(snapshot.child("time").getValue().toString()));
+                Log.v("CHECK", allOperationsTime.get(0).toString());
                 allOperationsAmount.add(Integer.parseInt(snapshot.child("amount").getValue().toString()));
                 allOperationsName.add((String) snapshot.child("name").getValue());
 
