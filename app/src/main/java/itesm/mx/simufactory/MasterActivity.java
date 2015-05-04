@@ -19,6 +19,8 @@ public abstract class MasterActivity extends ActionBarActivity {
     long startTime = 0;
     long endTime = 15000;
 
+    int budget = 0;
+
     String titleString = "No title";
     String userName = "Admin";
     boolean admin = false;
@@ -29,10 +31,20 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     long teamId = 0;
 
+    final ArrayList<String> machines = new ArrayList<String>();
+
     final ArrayList<String> allOperations = new ArrayList<String>();
+
+    final ArrayList<ArrayList<String>> requiredOperations= new ArrayList<ArrayList<String>>();
+
+    ArrayList<Operation> operationsObject;
 
     final ArrayList<String> allOperationsTime = new ArrayList<String>();
     final ArrayList<String> allOperationsName = new ArrayList<String>();
+    final ArrayList<Integer> allOperationsAmount = new ArrayList<Integer>();
+
+    final ArrayList<String> resources = new ArrayList<String>();
+    final ArrayList<Integer> resourcesCost = new ArrayList<Integer>();
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
