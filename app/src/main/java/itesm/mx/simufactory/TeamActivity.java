@@ -1,16 +1,10 @@
 package itesm.mx.simufactory;
 
 import android.content.Intent;
-import android.os.Handler;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,8 +21,12 @@ import java.util.ArrayList;
 public class TeamActivity extends MasterActivity {
 
     final ArrayList<String> operations = new ArrayList<String>();
+
+
     final ArrayList<String> machines = new ArrayList<String>();
     final ArrayList<String> resources = new ArrayList<String>();
+
+    String selectedMachine = "none";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,18 +83,17 @@ public class TeamActivity extends MasterActivity {
         });
 
 
+        final ArrayAdapter<String> resourcesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_resources, R.id.resourcesRowTV, allOperations);
+        final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
+        final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
 
-        final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row, R.id.rowTV, operations);
-        final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_usersrow, R.id.usersrowTV, machines);
-
-
-        simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
+        simulationRef.child("machines").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
-                    operations.add((String) snapshot.child("name").getValue());
-                    operationsAdapter.notifyDataSetChanged();
+                    machines.add((String) snapshot.child("name").getValue());
+                    machinesAdapter.notifyDataSetChanged();
                 }
             }
 
@@ -106,7 +103,38 @@ public class TeamActivity extends MasterActivity {
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
+        simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
+            // Retrieve new posts as they are added to Firebase
+            @Override
+            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
+                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
+                    operations.add((String) snapshot.child("name").getValue());
+
+                    operationsAdapter.notifyDataSetChanged();
+                }
+                allOperations.add((String) snapshot.child("name").getValue() + " - " + snapshot.child("amount").getValue().toString());
+                allOperationsTime.add(snapshot.child("time").getValue().toString());
+                allOperationsName.add((String) snapshot.child("name").getValue());
+
+                resourcesAdapter.notifyDataSetChanged();
+
+            }
+
+            public void onChildChanged(DataSnapshot snapshot, String s) {
+                int index = Integer.parseInt(snapshot.getKey().toString());
+                allOperations.set(index, allOperationsName.get(index) + " - " + snapshot.child("amount").getValue().toString());
+
+                resourcesAdapter.notifyDataSetChanged();
+
+            }
+            public void onChildRemoved(DataSnapshot dataSnapshot) {}
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
+
         operationLV.setAdapter(operationsAdapter);
+        machinesLV.setAdapter(machinesAdapter);
+        resourcesLV.setAdapter(resourcesAdapter);
         registerForContextMenu(operationLV);
 
         AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){

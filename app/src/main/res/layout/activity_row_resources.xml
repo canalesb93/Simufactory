@@ -6,8 +6,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="TEXT IN HERE"
-        android:id="@+id/usersrowTV"
+        android:id="@+id/resourcesRowTV"
         android:padding="10px"
-        android:textSize="15dp" />
+        android:textSize="20dp"
+        android:gravity="right" />
 
 </LinearLayout>

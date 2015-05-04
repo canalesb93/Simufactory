@@ -13,14 +13,24 @@ public class Operation {
     long time;
     int team;
     String[] requires;
+    int amount;
 
-    public Operation(String name, int cost, int gain, long time, int team, String[] requires) {
+    public Operation(String name, int cost, int gain, long time, int team, String[] requires, int amount) {
         this.name = name;
         this.cost = cost;
         this.gain = gain;
         this.time = time;
         this.team = team;
         this.requires = requires;
+        this.amount = amount;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
     public int getTeam() { return team; }
