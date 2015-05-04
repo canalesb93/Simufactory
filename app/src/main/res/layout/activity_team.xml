@@ -38,63 +38,40 @@
         android:weightSum="1"
         android:id="@+id/linearLayout"
         android:layout_above="@+id/buyResourcesButton"
-        android:layout_below="@+id/textView2">
+        android:layout_below="@+id/teamNameTV">
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Resources"
+            android:id="@+id/textView2"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/teamNameTV"
+            android:layout_alignRight="@+id/linearLayout"
+            android:layout_alignEnd="@+id/linearLayout" />
+
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="105dp"
+            android:id="@+id/resourcesLV"
+            android:choiceMode="none" />
+
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:weightSum="1"
-            android:id="@+id/ll">
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:id="@+id/ll2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Time: "
-                    android:id="@+id/textView15" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:id="@+id/textView16"
-                    android:text="Text:" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Another:"
-                    android:id="@+id/textView17" />
-            </LinearLayout>
-
-            <GridLayout
-                android:layout_width="189dp"
-                android:layout_height="match_parent"></GridLayout>
-
-            <ListView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:id="@+id/resourcesLV"
-                android:choiceMode="none" />
-        </LinearLayout>
+            android:text="Go to store"
+            android:id="@+id/buyResourcesButton"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Machines"
-            android:id="@+id/machineTitle"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/machineTitle" />
 
         <ListView
             android:layout_width="match_parent"
@@ -110,8 +87,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Operations"
-            android:id="@+id/textView14"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/textView14" />
 
         <ListView
             android:layout_width="match_parent"
@@ -131,27 +107,6 @@
         android:id="@+id/currentBudgetTV"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignBottom="@+id/mainTimer" />
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:text="Buy Resources"
-        android:id="@+id/buyResourcesButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Resources"
-        android:id="@+id/textView2"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/teamNameTV"
-        android:layout_alignRight="@+id/linearLayout"
-        android:layout_alignEnd="@+id/linearLayout" />
 
 </RelativeLayout>
