@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.firebase.client.Firebase;
 
+import java.util.ArrayList;
+
 
 public abstract class MasterActivity extends ActionBarActivity {
 
@@ -26,6 +28,11 @@ public abstract class MasterActivity extends ActionBarActivity {
     Firebase sessionRef = null;
 
     long teamId = 0;
+
+    final ArrayList<String> allOperations = new ArrayList<String>();
+
+    final ArrayList<String> allOperationsTime = new ArrayList<String>();
+    final ArrayList<String> allOperationsName = new ArrayList<String>();
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();

@@ -158,20 +158,21 @@ public class SessionActivity extends ActionBarActivity {
         ArrayList<Operation> operations = new ArrayList<Operation>();
         ArrayList<Machine> machines = new ArrayList<Machine>();
 
-        /// RESOURCE, COST, GAIN, TIME, TEAMID, REQUIRED
-        operations.add(new Operation("A", 5, 0, 0, 0, null));
-        operations.add(new Operation("B", 10, 0, 0, 0, null));
+        /// RESOURCE, COST, GAIN, TIME, TEAMID, REQUIRED, AMOUNT ( owned )
+        operations.add(new Operation("A", 5, 0, 0, 0, null, 3));
+        operations.add(new Operation("B", 10, 0, 0, 0, null, 3));
 
-        operations.add(new Operation("P1", 10, 0, 5000, 1, new String[]{"A"}));
-        operations.add(new Operation("P2", 20, 0, 7500, 2,new String[]{"B"}));
+        operations.add(new Operation("P1", 10, 0, 5000, 1, new String[]{"A"}, 0));
+        operations.add(new Operation("P2", 20, 0, 7500, 2,new String[]{"B"}, 0));
 
-        operations.add(new Operation("C", 10, 35, 10000, 3, new String[]{"P1", "P2"}));
+        operations.add(new Operation("C", 10, 35, 10000, 3, new String[]{"P1", "P2"}, 0));
 
         machines.add(new Machine("Machine 1", 1));
         machines.add(new Machine("Machine 2", 1));
         machines.add(new Machine("Machine 3", 2));
         machines.add(new Machine("Machine 4", 2));
         machines.add(new Machine("Machine 5", 3));
+
         //CASH, TIME, OPERATIONS, NUM OF TEAMS
         Simulation simulation1 = new Simulation(100, 10000, operations, machines, 3);
 
