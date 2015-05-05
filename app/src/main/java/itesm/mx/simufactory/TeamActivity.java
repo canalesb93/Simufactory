@@ -1,6 +1,9 @@
 package itesm.mx.simufactory;
 
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -160,6 +163,10 @@ public class TeamActivity extends MasterActivity {
 
             public void onChildChanged(DataSnapshot snapshot, String s) {
                 int index = Integer.parseInt(snapshot.getKey().toString());
+
+                if(((Long) snapshot.child("amount").getValue()).intValue() >  allOperationsAmount.get(index)){
+                    Toast.makeText(getApplicationContext(), "Resource "+ snapshot.child("name").getValue().toString() + " produced.", Toast.LENGTH_SHORT).show();
+                }
 
                 allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
                 g.getSimulation().getOperations().get(index).setAmount(Integer.parseInt(snapshot.child("amount").getValue().toString()));

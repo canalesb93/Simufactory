@@ -81,7 +81,7 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getApplicationContext(), "Session changed.", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(), "Session changed.", Toast.LENGTH_SHORT).show();
             }
 
             @Override

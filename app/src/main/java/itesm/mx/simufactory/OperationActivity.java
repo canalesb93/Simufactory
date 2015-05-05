@@ -50,6 +50,7 @@ public class OperationActivity extends ActionBarActivity {
 
         TextView titleTextView = (TextView) findViewById(R.id.operationNameTV);
         TextView timeTextView = (TextView) findViewById(R.id.tvTime);
+
         final EditText unitsToProduce = (EditText) findViewById(R.id.unitsET);
         final ListView requiredResourcesLV = (ListView) findViewById(R.id.requiredResourcesLV);
 
@@ -73,6 +74,8 @@ public class OperationActivity extends ActionBarActivity {
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
         actualOperation = g.getSimulation().getOperations().get(operationPosition);
+
+        timeTextView.setText((actualOperation.getTime() / 1000) + " seconds");
         Log.v("TEST", actualOperation.getName());
         final ResourceListAdapter requiredAdapter = new ResourceListAdapter(this, requiredResources, operationsAmount);
 
