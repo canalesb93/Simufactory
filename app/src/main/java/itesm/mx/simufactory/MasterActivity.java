@@ -8,8 +8,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.MutableData;
+import com.firebase.client.Transaction;
 
 import java.util.ArrayList;
 
@@ -43,6 +48,8 @@ public abstract class MasterActivity extends ActionBarActivity {
     final ArrayList<String> resources = new ArrayList<String>();
     final ArrayList<Integer> resourcesCost = new ArrayList<Integer>();
 
+    Firebase simulationRef;
+
 
     Globals g = Globals.getInstance();
 
@@ -59,14 +66,47 @@ public abstract class MasterActivity extends ActionBarActivity {
 
 
                 // Resource generation time check
-                for( Machine m : g.getSimulation().getMachines()){
+                for( final Machine m : g.getSimulation().getMachines()){
                     if(m.getTimeCounter() < m.getTimes().size()) {
                         long v = m.getTimes().get(m.getTimeCounter());
                         Log.v("MILLIS", v + " ");
                         if (millis >= v) {
                             Log.v("MILLIS", "FINISHED ONE GOING TO NEXT");
                             m.addTimeCounter();
-                            //add resource
+
+
+
+                            //add resource START
+                            simulationRef.child("operations").runTransaction(new Transaction.Handler() {
+                                @Override
+                                public Transaction.Result doTransaction(MutableData currentData) {
+                                    boolean pass = true;
+                                    Log.v("REQUIRED", "STARTING TRANSACTION");
+                                    currentData.child(m.getCurrentResource()+"/amount").setValue((Long) currentData.child(m.getCurrentResource() + "/amount").getValue() + 1);
+                                    if(m.getTimeCounter() < m.getTimes().size()) {
+                                        Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
+                                        for (int i : actualOperation.getRequires()) {
+                                            if ((Long) currentData.child(i + "/amount").getValue() <= 0) {
+                                                pass = false;
+                                                Log.v("REQUIRED", "Need more resources of ID: " + i);
+                                            }
+                                        }
+                                        if (pass) {
+                                            for (int i : actualOperation.getRequires()) {
+                                                currentData.child(i + "/amount").setValue((Long) currentData.child(i + "/amount").getValue() - 1);
+                                            }
+
+
+                                        } else {
+                                            Toast.makeText(getApplicationContext(), "You need more resources", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                    return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
+                                }
+
+                                @Override
+                                public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) { }
+                            });
                         }
                     }
                 }

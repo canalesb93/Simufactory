@@ -25,7 +25,7 @@ public class TeamActivity extends MasterActivity {
 
     final ArrayList<String> operations = new ArrayList<String>();
 
-    Integer selectedMachine = 0;
+    Integer selectedMachine = -1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,8 +58,7 @@ public class TeamActivity extends MasterActivity {
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase userRef = ref.child("sessions/"+titleString+"/users/"+userName);
         sessionRef = ref.child("sessions/"+titleString);
-        final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
-
+        simulationRef = ref.child("sessions/"+titleString+"/simulation");
         simulationRef.addListenerForSingleValueEvent(new ValueEventListener() {
              @Override
              public void onDataChange(DataSnapshot snapshot) {
@@ -69,28 +68,41 @@ public class TeamActivity extends MasterActivity {
              public void onCancelled(FirebaseError firebaseError) {}
         });
 
+        final ResourceListAdapter resourcesAdapter = new ResourceListAdapter(this, allOperations, allOperationsAmount);
+        final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
+        final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
+
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+
                 if(snapshot.child("teamId").getValue() != null)
                     teamId = (long) snapshot.child("teamId").getValue();
+
+                int mCounter = 0;
+                for( Machine m : g.getSimulation().getMachines()){
+                    if( m.getTeam() == teamId || teamId == 0) {
+                        machines.add(m.getName());
+                        myMachinesIds.add(mCounter);
+                        Log.v("MACHINES", "Added machine " + m.getName() + " for team " + teamId);
+
+                    }
+                    allMachines.add(m.getName());
+                    mCounter++;
+                }
+                machinesAdapter.notifyDataSetChanged();
             }
 
             public void onCancelled(FirebaseError firebaseError) {
             }
         });
 
-
-        final ResourceListAdapter resourcesAdapter = new ResourceListAdapter(this, allOperations, allOperationsAmount);
-        final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
-        final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
-
         simulationRef.child("money").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 budget = Integer.parseInt(dataSnapshot.getValue().toString());
                 currentBudget.setText(budget + "$");
-                Log.v("CHANGED", "Budget is "+ budget);
+                Log.v("CHANGED", "Budget is " + budget);
             }
 
             @Override
@@ -99,16 +111,7 @@ public class TeamActivity extends MasterActivity {
             }
         });
 
-        int mCounter = 0;
-        for( Machine m : g.getSimulation().getMachines()){
-            if( m.getTeam() == teamId || teamId == 0) {
-                machines.add(m.getName());
-                myMachinesIds.add(mCounter);
-            }
-            allMachines.add(m.getName());
-            mCounter++;
-        }
-        machinesAdapter.notifyDataSetChanged();
+
 
 //
 //        simulationRef.child("machines").addChildEventListener(new ChildEventListener() {
@@ -157,7 +160,7 @@ public class TeamActivity extends MasterActivity {
 
             public void onChildChanged(DataSnapshot snapshot, String s) {
                 int index = Integer.parseInt(snapshot.getKey().toString());
-                allOperations.set(index, g.getSimulation().getOperations().get(index).getName() + " - " + snapshot.child("amount").getValue().toString());
+
                 allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
                 g.getSimulation().getOperations().get(index).setAmount(Integer.parseInt(snapshot.child("amount").getValue().toString()));
 
@@ -179,7 +182,7 @@ public class TeamActivity extends MasterActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String pressedOperation = operations.get(position);
 
-                if(!selectedMachine.equals("none")) {
+                if(selectedMachine != -1) {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
                     intent.putExtra("admin", false);
                     intent.putExtra("sessionTitle", titleString);
