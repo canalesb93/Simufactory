@@ -44,6 +44,6 @@
         android:layout_width="wrap_content"
         android:layout_height="221dp"
         android:layout_marginTop="15dp"
-        android:id="@+id/listView2"
+        android:id="@+id/lvResourcesStore"
         android:layout_weight="0.82" />
 </LinearLayout>

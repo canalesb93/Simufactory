@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Processing #3"
+                    android:text="Processing: "
                     android:id="@+id/textView12"
                     android:layout_weight="0.29" />
 
@@ -119,7 +119,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Done #2"
+                    android:text="Done: "
                     android:id="@+id/textView13"
                     android:layout_weight="0.37" />
             </LinearLayout>

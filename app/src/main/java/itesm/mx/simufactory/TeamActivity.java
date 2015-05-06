@@ -24,11 +24,12 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 
 
-public class TeamActivity extends MasterActivity {
+public class TeamActivity extends MasterActivity implements View.OnClickListener {
 
     final ArrayList<String> operations = new ArrayList<String>();
 
     Integer selectedMachine = -1;
+    Button btnStore;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,7 @@ public class TeamActivity extends MasterActivity {
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
+        btnStore = (Button) findViewById(R.id.buyResourcesButton);
 
         g.setStartTime(System.currentTimeMillis());
         timerHandler.postDelayed(timerRunnable, 0);
@@ -232,8 +234,16 @@ public class TeamActivity extends MasterActivity {
 //            }
 //        });
 
+        btnStore.setOnClickListener(this);
 
+    }
 
+    @Override
+    public void onClick(View v) {
+        if(btnStore.isPressed()){
+            Intent intent = new Intent(TeamActivity.this, StoreActivity.class);
+            startActivity(intent);
+        }
     }
 
     @Override
