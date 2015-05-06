@@ -15,7 +15,7 @@
         android:textSize="30dp" />
     <ProgressBar
         android:id="@+id/operationPB"
-        style="?android:attr/progressBarStyleHorizontal"
+        style="@android:style/Widget.ProgressBar.Horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/operationNameTV"
@@ -23,5 +23,13 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:indeterminate="false"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:minHeight="10dip"
+        android:maxHeight="10dip"
+        android:progressTint="#34D937"
+        android:progressBackgroundTint="#A9AAB0"
+
+        />
 </RelativeLayout>
+
+    <!--android:progressDrawable="@drawable/greenprogress"-->
