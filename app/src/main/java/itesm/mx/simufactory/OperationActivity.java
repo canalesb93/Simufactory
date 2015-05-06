@@ -58,7 +58,9 @@ public class OperationActivity extends ActionBarActivity {
         final ListView requiredResourcesLV = (ListView) findViewById(R.id.requiredResourcesLV);
         final TextView resCost = (TextView) findViewById(R.id.tvCost);
         final TextView resReward = (TextView) findViewById(R.id.tvReward);
-        final TextView resProduces = (TextView) findViewById(R.id.tvProducedRes);
+        final TextView resProduces = (TextView) findViewById(R.id.tvProduces);
+        final TextView processing = (TextView) findViewById(R.id.tvProcessing);
+        final TextView done = (TextView) findViewById(R.id.tvDone);
 
         Bundle extras = getIntent().getExtras();
 
@@ -87,6 +89,8 @@ public class OperationActivity extends ActionBarActivity {
         resCost.setText("$"+actualOperation.getCost());
         resReward.setText("$"+actualOperation.getGain());
         resProduces.setText(actualOperation.getName());
+        processing.setText("0");
+        done.setText("0");
 
         timeTextView.setText((actualOperation.getTime() / 1000) + " seconds");
         Log.v("TEST", actualOperation.getName());
@@ -106,6 +110,8 @@ public class OperationActivity extends ActionBarActivity {
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int amount = Integer.parseInt(dataSnapshot.getValue().toString());
                     operationsAmount.set(reqOpPosition, amount);
+                    processing.setText(actualMachine.getTimes().size() + "");
+                    done.setText(actualMachine.getTimeCounter()+"");
                     Log.v("CHANGED", reqOpPosition+" amount is " + amount);
                     requiredAdapter.notifyDataSetChanged();
                 }
@@ -117,6 +123,16 @@ public class OperationActivity extends ActionBarActivity {
             });
             opCounter++;
         }
+        simulationRef.child("operations").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                processing.setText(actualMachine.getTimes().size() + "");
+                done.setText(actualMachine.getTimeCounter()+"");
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {}
+        });
 
 
         requiredResourcesLV.setAdapter(requiredAdapter);
