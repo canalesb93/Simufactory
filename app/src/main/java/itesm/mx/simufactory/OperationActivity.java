@@ -53,6 +53,9 @@ public class OperationActivity extends ActionBarActivity {
 
         final EditText unitsToProduce = (EditText) findViewById(R.id.unitsET);
         final ListView requiredResourcesLV = (ListView) findViewById(R.id.requiredResourcesLV);
+        final TextView resCost = (TextView) findViewById(R.id.tvCost);
+        final TextView resReward = (TextView) findViewById(R.id.tvReward);
+        final TextView resProduces = (TextView) findViewById(R.id.tvProducedRes);
 
         Bundle extras = getIntent().getExtras();
 
@@ -74,6 +77,11 @@ public class OperationActivity extends ActionBarActivity {
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
         actualOperation = g.getSimulation().getOperations().get(operationPosition);
+
+
+        resCost.setText("$"+actualOperation.getCost());
+        resReward.setText("$"+actualOperation.getGain());
+        resProduces.setText(actualOperation.getName());
 
         timeTextView.setText((actualOperation.getTime() / 1000) + " seconds");
         Log.v("TEST", actualOperation.getName());

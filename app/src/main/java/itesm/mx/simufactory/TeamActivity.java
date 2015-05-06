@@ -21,6 +21,8 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 
@@ -42,6 +44,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
+
         btnStore = (Button) findViewById(R.id.buyResourcesButton);
 
         g.setStartTime(System.currentTimeMillis());
