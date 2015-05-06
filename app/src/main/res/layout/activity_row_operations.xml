@@ -29,7 +29,8 @@
         android:progressTint="#26A628"
         android:progressBackgroundTint="#A9AAB0"
 
-        />
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
 </RelativeLayout>
 
     <!--android:progressDrawable="@drawable/greenprogress"-->
