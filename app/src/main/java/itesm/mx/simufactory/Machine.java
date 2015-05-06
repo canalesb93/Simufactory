@@ -15,7 +15,7 @@ public class Machine {
     public Machine(String name, int team) {
         this.name = name;
         this.team = team;
-        this.currentResource = 0;
+        this.currentResource = -1;
         this.timeCounter = 0;
         this.times = new ArrayList<Long>();
     }

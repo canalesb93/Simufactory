@@ -42,6 +42,9 @@ public class OperationActivity extends ActionBarActivity {
 
     Globals g = Globals.getInstance();
     Operation actualOperation;
+    Machine actualMachine;
+
+    Toast myToast;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,7 @@ public class OperationActivity extends ActionBarActivity {
             operationPosition = extras.getInt("operationPosition");
             titleString = extras.getString("sessionTitle");
             admin = extras.getBoolean("admin");
-            titleTextView.setText("Operation " + currentOperation);
+
         } else {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }
@@ -74,11 +77,14 @@ public class OperationActivity extends ActionBarActivity {
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
         actualOperation = g.getSimulation().getOperations().get(operationPosition);
+        actualMachine = g.getSimulation().getMachines().get(currentMachine);
+        titleTextView.setText("Machine " + actualMachine.getName() + " with operation " + currentOperation);
 
         timeTextView.setText((actualOperation.getTime() / 1000) + " seconds");
         Log.v("TEST", actualOperation.getName());
         final ResourceListAdapter requiredAdapter = new ResourceListAdapter(this, requiredResources, operationsAmount);
 
+        myToast = Toast.makeText(getApplicationContext(), "MESSAGE ERROR", Toast.LENGTH_SHORT);
 
         int opCounter = 0;
         for( int i : actualOperation.getRequires()){
@@ -113,46 +119,61 @@ public class OperationActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 // pending verifications
+                if(actualMachine.getCurrentResource() < 0){
+                    simulationRef.runTransaction(new Transaction.Handler() {
+                        @Override
+                        public Transaction.Result doTransaction(MutableData currentData) {
 
-                simulationRef.child("operations").runTransaction(new Transaction.Handler() {
-                    @Override
-                    public Transaction.Result doTransaction(MutableData currentData) {
-                        boolean pass = true;
-                        int amountToProduce = 0;
-                        amountToProduce = Integer.parseInt(unitsToProduce.getText().toString());
-                        Log.v("REQUIRED", "STARTING TRANSACTION");
-                        for( int i : actualOperation.getRequires()) {
-                            if((Long) currentData.child(i+"/amount").getValue() < amountToProduce){
-                                pass = false;
-                                Log.v("REQUIRED", "Need more resources of ID: " + i);
+                            if (((Long) currentData.child("money").getValue()).intValue() >= actualOperation.getCost()) {
+                                boolean pass = true;
+                                int amountToProduce = 0;
+                                amountToProduce = Integer.parseInt(unitsToProduce.getText().toString());
+                                Log.v("REQUIRED", "STARTING TRANSACTION");
+                                for (int i : actualOperation.getRequires()) {
+                                    if ((Long) currentData.child("operations/" + i + "/amount").getValue() < amountToProduce) {
+                                        pass = false;
+                                        Log.v("REQUIRED", "Need more resources of ID: " + i);
+
+                                    }
+                                }
+                                if (pass) {
+                                    for (int i : actualOperation.getRequires()) {
+                                        currentData.child("operations/" + i + "/amount").setValue((Long) currentData.child("operations/" + i + "/amount").getValue() - 1);
+                                    }
+                                    currentData.child("money").setValue((Long) currentData.child("money").getValue() - actualOperation.getCost());
+                                    Log.v("REQUIRED", "Setting amounts");
+
+                                    long millis = System.currentTimeMillis() - g.getStartTime();
+
+                                    actualMachine.setCurrentResource(operationPosition);
+                                    for (int i = 0; i < amountToProduce; i++) {
+                                        millis = millis + actualOperation.getTime();
+                                        Log.v("MILLIS", millis + " ");
+                                        actualMachine.addTime(millis);
+                                    }
+                                    myToast.setText("Machine activated");
+
+                                } else {
+                                    Log.v("TOAST", "You need more resources");
+                                    myToast.setText("You need more resources");
+                                }
+                            } else {
+                                Log.v("TOAST", "You need more money");
+                                myToast.setText("You need more money");
                             }
+                            return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
                         }
-                        if (pass) {
-                            for( int i : actualOperation.getRequires()) {
-                                currentData.child(i + "/amount").setValue((Long) currentData.child(i + "/amount").getValue() - 1);
-                            }
-                            Log.v("REQUIRED", "Setting amounts");
 
-                            long millis = System.currentTimeMillis() - g.getStartTime();
-                            Machine temp = g.getSimulation().getMachines().get(currentMachine);
-                            temp.setCurrentResource(operationPosition);
-                            for (int i = 0; i < amountToProduce; i++) {
-                                millis = millis + actualOperation.getTime();
-                                Log.v("MILLIS", millis+" ");
-                                temp.addTime(millis);
-                            }
 
-                        } else {
-                            Toast.makeText(getApplicationContext(), "You need more resources", Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                            myToast.show();
                         }
-                        return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
-                    }
-
-                    @Override
-                    public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) { }
-                });
-
-
+                    });
+                } else {
+                    Toast.makeText(getApplicationContext(), "Machine is in use ", Toast.LENGTH_SHORT).show();
+                    Log.v("TOAST", "Machine is in use");
+                }
 
             }
         });
@@ -160,6 +181,13 @@ public class OperationActivity extends ActionBarActivity {
 
 
 
+    }
+
+    public void toastNoResource(){
+
+    }
+
+    public void toastNoMoney(){
     }
 
     @Override

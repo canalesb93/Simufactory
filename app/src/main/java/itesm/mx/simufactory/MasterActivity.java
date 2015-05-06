@@ -53,6 +53,9 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     Globals g = Globals.getInstance();
 
+    Toast myToast;
+
+
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
     Runnable timerRunnable = new Runnable() {
@@ -77,35 +80,57 @@ public abstract class MasterActivity extends ActionBarActivity {
 
 
                             //add resource START
-                            simulationRef.child("operations").runTransaction(new Transaction.Handler() {
+                            simulationRef.runTransaction(new Transaction.Handler() {
                                 @Override
                                 public Transaction.Result doTransaction(MutableData currentData) {
+                                    Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
+
                                     boolean pass = true;
                                     Log.v("REQUIRED", "STARTING TRANSACTION");
-                                    currentData.child(m.getCurrentResource()+"/amount").setValue((Long) currentData.child(m.getCurrentResource() + "/amount").getValue() + 1);
-                                    if(m.getTimeCounter() < m.getTimes().size()) {
-                                        Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
-                                        for (int i : actualOperation.getRequires()) {
-                                            if ((Long) currentData.child(i + "/amount").getValue() <= 0) {
-                                                pass = false;
-                                                Log.v("REQUIRED", "Need more resources of ID: " + i);
-                                            }
-                                        }
-                                        if (pass) {
+                                    currentData.child("operations/" + m.getCurrentResource() + "/amount").setValue((Long) currentData.child("operations/" + m.getCurrentResource() + "/amount").getValue() + 1);
+                                    currentData.child("money").setValue((Long) currentData.child("money").getValue() + actualOperation.getGain());
+                                    myToast.setText("Resource " + actualOperation.getName() +" was produced");
+                                    if (m.getTimeCounter() < m.getTimes().size()) {
+                                        if (((Long) currentData.child("money").getValue()).intValue() >= actualOperation.getCost()) {
+                                            currentData.child("money").setValue((Long) currentData.child("money").getValue() - actualOperation.getCost());
                                             for (int i : actualOperation.getRequires()) {
-                                                currentData.child(i + "/amount").setValue((Long) currentData.child(i + "/amount").getValue() - 1);
+                                                if ((Long) currentData.child("operations/" + i + "/amount").getValue() <= 0) {
+                                                    pass = false;
+                                                    Log.v("REQUIRED", "Need more resources of ID: " + i);
+                                                }
                                             }
+                                            if (pass) {
+                                                for (int i : actualOperation.getRequires()) {
+                                                    currentData.child("operations/" + i + "/amount").setValue((Long) currentData.child("operations/" + i + "/amount").getValue() - 1);
+                                                }
 
 
+                                            } else {
+                                                myToast.setText("Need more resources");
+                                                m.setCurrentResource(-1);
+                                                m.clearTimes();
+                                                Log.v("MACHINE", "Machine " + m.getName() + " free!");
+                                            }
                                         } else {
-                                            Toast.makeText(getApplicationContext(), "You need more resources", Toast.LENGTH_SHORT).show();
+                                            Log.v("REQUIRED", "Need more money");
+                                            myToast.setText("Need more money");
+                                            m.setCurrentResource(-1);
+                                            m.clearTimes();
+                                            Log.v("MACHINE", "Machine " + m.getName() + " free!");
                                         }
+                                    } else {
+                                        m.setCurrentResource(-1);
+                                        m.clearTimes();
+                                        Log.v("MACHINE", "Machine " + m.getName() + " free!");
+
                                     }
                                     return Transaction.success(currentData); //we can also abort by calling Transaction.abort()
                                 }
 
                                 @Override
-                                public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) { }
+                                public void onComplete(FirebaseError firebaseError, boolean committed, DataSnapshot currentData) {
+                                    myToast.show();
+                                }
                             });
                         }
                     }
