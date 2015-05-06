@@ -176,6 +176,7 @@ public class OperationActivity extends ActionBarActivity {
                                         actualMachine.addTime(millis);
                                     }
                                     myToast.setText("Machine activated");
+                                    finish();
 
                                 } else {
                                     Log.v("TOAST", "You need more resources");

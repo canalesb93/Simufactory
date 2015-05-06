@@ -26,7 +26,7 @@
         android:layout_alignParentTop="true"
         android:minHeight="10dip"
         android:maxHeight="10dip"
-        android:progressTint="#34D937"
+        android:progressTint="#26A628"
         android:progressBackgroundTint="#A9AAB0"
 
         />
