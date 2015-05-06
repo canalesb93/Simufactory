@@ -70,6 +70,12 @@ public abstract class MasterActivity extends ActionBarActivity {
                     if(m.getTimeCounter() < m.getTimes().size()) {
                         long v = m.getTimes().get(m.getTimeCounter());
                         Log.v("MILLIS", v + " ");
+                        final Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
+//                        long startTime = v - actualOperation.getTime();
+//                        long progressTime = millis - startTime;
+
+
+                        // v end time
                         if (millis >= v) {
                             Log.v("MILLIS", "FINISHED ONE GOING TO NEXT");
                             m.addTimeCounter();
@@ -84,7 +90,6 @@ public abstract class MasterActivity extends ActionBarActivity {
                                     Log.v("REQUIRED", "STARTING TRANSACTION");
                                     currentData.child(m.getCurrentResource()+"/amount").setValue((Long) currentData.child(m.getCurrentResource() + "/amount").getValue() + 1);
                                     if(m.getTimeCounter() < m.getTimes().size()) {
-                                        Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
                                         for (int i : actualOperation.getRequires()) {
                                             if ((Long) currentData.child(i + "/amount").getValue() <= 0) {
                                                 pass = false;

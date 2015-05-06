@@ -32,6 +32,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 
     Integer selectedMachine = -1;
     Button btnStore;
+    final ArrayList<String> opsNames = new ArrayList<>();
+    final ArrayList<Integer> opsProgress = new ArrayList<>();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,6 +46,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         final ListView operationLV = (ListView) findViewById(R.id.operationsLV);
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
+
+        final OperationListAdapter opsListAdapter = new OperationListAdapter(this, opsNames, opsProgress);
 
         btnStore = (Button) findViewById(R.id.buyResourcesButton);
 
@@ -77,7 +81,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         });
 
         final ResourceListAdapter resourcesAdapter = new ResourceListAdapter(this, allOperations, allOperationsAmount);
-        final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
+        //final ArrayAdapter<String> operationsAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_operations, R.id.operationNameTV, operations);
+
         final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
 
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -151,8 +156,17 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 if(((long) snapshot.child("team").getValue() == teamId || teamId == 0) && Integer.parseInt(snapshot.child("time").getValue().toString()) != 0) {
-                    operations.add((String) snapshot.child("name").getValue());
-                    operationsAdapter.notifyDataSetChanged();
+                    //operations.add((String) snapshot.child("name").getValue());
+
+                    double fractionPercentage = 0.0;
+                    int percentageProgress = 0;
+
+                    //fractionPercentage = progress/complete *100;
+
+                    opsNames.add((String) snapshot.child("name").getValue());
+                    opsProgress.add(50);
+                    opsListAdapter.notifyDataSetChanged();
+                    //operationsAdapter.notifyDataSetChanged();
                 }
                 if(Integer.parseInt(snapshot.child("time").getValue().toString()) == 0){
                     resources.add(snapshot.child("name").getValue().toString());
@@ -184,7 +198,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
-        operationLV.setAdapter(operationsAdapter);
+        //operationLV.setAdapter(operationsAdapter);
+        operationLV.setAdapter(opsListAdapter);
         machinesLV.setAdapter(machinesAdapter);
         resourcesLV.setAdapter(resourcesAdapter);
         registerForContextMenu(operationLV);
@@ -192,7 +207,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         AdapterView.OnItemClickListener operationListViewListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String pressedOperation = operations.get(position);
+                String pressedOperation = opsNames.get(position);
 
                 if(selectedMachine != -1) {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
