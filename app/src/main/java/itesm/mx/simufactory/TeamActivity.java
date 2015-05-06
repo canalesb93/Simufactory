@@ -66,6 +66,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }
 
+        myToast = Toast.makeText(getApplicationContext(), "MESSAGE ERROR", Toast.LENGTH_SHORT);
+
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase userRef = ref.child("sessions/"+titleString+"/users/"+userName);
@@ -183,9 +185,9 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             public void onChildChanged(DataSnapshot snapshot, String s) {
                 int index = Integer.parseInt(snapshot.getKey().toString());
 
-                if(((Long) snapshot.child("amount").getValue()).intValue() >  allOperationsAmount.get(index)){
-                    Toast.makeText(getApplicationContext(), "Resource "+ snapshot.child("name").getValue().toString() + " produced.", Toast.LENGTH_SHORT).show();
-                }
+//                if(((Long) snapshot.child("amount").getValue()).intValue() >  allOperationsAmount.get(index)){
+//                    Toast.makeText(getApplicationContext(), "Resource "+ snapshot.child("name").getValue().toString() + " produced.", Toast.LENGTH_SHORT).show();
+//                }
 
                 allOperationsAmount.set(index, Integer.parseInt(snapshot.child("amount").getValue().toString()));
                 g.getSimulation().getOperations().get(index).setAmount(Integer.parseInt(snapshot.child("amount").getValue().toString()));
