@@ -15,5 +15,5 @@
     <string name="title_activity_operation">OperationActivity</string>
     <string name="title_activity_master">MasterActivity</string>
     <string name="title_activity_summary">SummaryActivity</string>
-
+    <string name="title_activity_store">StoreActivity</string>
 </resources>

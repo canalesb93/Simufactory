@@ -24,6 +24,89 @@
             android:id="@+id/operationNameTV"
             android:layout_gravity="center_horizontal" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_weight="0.15">
+
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Cost"
+                android:textSize="15dp"
+                android:id="@+id/tv"
+                android:layout_marginLeft="43dp"
+                android:layout_marginStart="43dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Reward"
+                android:textSize="15dp"
+                android:id="@+id/tvR"
+                android:layout_marginRight="54dp"
+                android:layout_marginEnd="54dp"
+                android:layout_alignTop="@+id/tv"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="30dp"
+                android:text="$20"
+                android:id="@+id/tvCost"
+                android:layout_above="@+id/tv"
+                android:layout_alignLeft="@+id/tv"
+                android:layout_alignStart="@+id/tv" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="30dp"
+                android:text="$20"
+                android:id="@+id/tvReward"
+                android:layout_above="@+id/tvR"
+                android:layout_alignLeft="@+id/tvR"
+                android:layout_alignStart="@+id/tvR" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="35dp"
+            android:layout_below="@+id/tvCost"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:weightSum="1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Produces:"
+                android:id="@+id/textView6" />
+
+            <GridLayout
+                android:layout_width="52dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.23"></GridLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/tvProducedRes" />
+        </LinearLayout>
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="336dp"
@@ -53,9 +136,20 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="123dp"
+            android:layout_height="69dp"
             android:id="@+id/requiredResourcesLV"
-            android:choiceMode="none" />
+            android:choiceMode="none"
+            android:layout_weight="0.08" />
+
+        <RadioGroup
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.33"
+            android:weightSum="1"
+            android:id="@+id/radio">
+
+        </RadioGroup>
 
         <LinearLayout
             android:orientation="horizontal"
@@ -83,47 +177,65 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Start Machine"
-            android:id="@+id/startMachineButton"
-            android:layout_gravity="center_horizontal" />
+            android:id="@+id/startMachineButton" />
 
-        <RadioGroup
+        <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="0.32"
-            android:weightSum="1"
-            android:id="@+id/radio">
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.29"></LinearLayout>
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="83dp"
+            android:weightSum="1">
 
             <TextView
-                android:layout_width="179dp"
-                android:layout_height="match_parent"
+                android:layout_width="158dp"
+                android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="3:20"
-                android:id="@+id/textView11" />
+                android:text="Processing: "
+                android:id="@+id/textView12"
+                android:layout_alignParentLeft="true"
+                android:layout_marginLeft="0dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="0dp" />
 
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="1">
+            <TextView
+                android:layout_width="93dp"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Done: "
+                android:id="@+id/textView13"
+                android:layout_centerVertical="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Processing #3"
-                    android:id="@+id/textView12"
-                    android:layout_weight="0.29" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="processed"
+                android:id="@+id/tvProcessing"
+                android:layout_above="@+id/textView13"
+                android:layout_toRightOf="@+id/textView12"
+                android:layout_toEndOf="@+id/textView12"
+                android:layout_marginLeft="53dp"
+                android:layout_marginStart="53dp" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="Done #2"
-                    android:id="@+id/textView13"
-                    android:layout_weight="0.37" />
-            </LinearLayout>
-        </RadioGroup>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="done"
+                android:id="@+id/tvDone"
+                android:layout_centerVertical="true"
+                android:layout_alignLeft="@+id/tvProcessing"
+                android:layout_alignStart="@+id/tvProcessing" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 </RelativeLayout>
