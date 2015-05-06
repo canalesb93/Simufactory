@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textSize="9pt"
             android:text="$3,000.00"
-            android:id="@+id/budgetTV" />
+            android:id="@+id/storeBudgetTV" />
     </LinearLayout>
 
     <ListView

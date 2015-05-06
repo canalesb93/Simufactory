@@ -198,7 +198,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 
                 if(selectedMachine != -1) {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
-                    intent.putExtra("admin", false);
+                    intent.putExtra("admin", admin);
                     intent.putExtra("sessionTitle", titleString);
                     intent.putExtra("selectedMachine", myMachinesIds.get(selectedMachine));
                     intent.putExtra("operationName", pressedOperation);
@@ -247,6 +247,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
     public void onClick(View v) {
         if(btnStore.isPressed()){
             Intent intent = new Intent(TeamActivity.this, StoreActivity.class);
+            intent.putExtra("admin", admin);
+            intent.putExtra("sessionTitle", titleString);
             startActivity(intent);
         }
     }
