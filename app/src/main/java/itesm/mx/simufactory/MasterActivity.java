@@ -73,6 +73,12 @@ public abstract class MasterActivity extends ActionBarActivity {
                     if(m.getTimeCounter() < m.getTimes().size()) {
                         long v = m.getTimes().get(m.getTimeCounter());
                         Log.v("MILLIS", v + " ");
+                        final Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
+//                        long startTime = v - actualOperation.getTime();
+//                        long progressTime = millis - startTime;
+
+
+                        // v end time
                         if (millis >= v) {
                             Log.v("MILLIS", "FINISHED ONE GOING TO NEXT");
                             m.addTimeCounter();
