@@ -32,8 +32,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 
     Integer selectedMachine = -1;
     Button btnStore;
-    final ArrayList<String> opsNames = new ArrayList<>();
-    final ArrayList<Integer> opsProgress = new ArrayList<>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         final ListView machinesLV = (ListView) findViewById(R.id.machinesLV);
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
 
-        final OperationListAdapter opsListAdapter = new OperationListAdapter(this, opsNames, opsProgress);
+        opsListAdapter = new OperationListAdapter(this, opsNames, opsProgress);
 
         btnStore = (Button) findViewById(R.id.buyResourcesButton);
 
@@ -155,6 +154,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
+            int opsCounter = 0;
+
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 if(((long) snapshot.child("team").getValue() == teamId || teamId == 0) && Integer.parseInt(snapshot.child("time").getValue().toString()) != 0) {
@@ -166,9 +167,13 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
                     //fractionPercentage = progress/complete *100;
 
                     opsNames.add((String) snapshot.child("name").getValue());
-                    opsProgress.add(50);
+                    opsProgress.add(0);
+                    listViewOpIds.add(opsCounter);
                     opsListAdapter.notifyDataSetChanged();
+                    opsCounter++;
                     //operationsAdapter.notifyDataSetChanged();
+                } else {
+                    listViewOpIds.add(-1);
                 }
                 if(Integer.parseInt(snapshot.child("time").getValue().toString()) == 0){
                     resources.add(snapshot.child("name").getValue().toString());

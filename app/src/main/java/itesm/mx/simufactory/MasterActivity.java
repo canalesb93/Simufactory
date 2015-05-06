@@ -42,11 +42,16 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     final ArrayList<String> allOperations = new ArrayList<String>();
     final ArrayList<Integer> myOperationsIds = new ArrayList<Integer>();
+    final ArrayList<Integer> listViewOpIds = new ArrayList<Integer>();
 
     final ArrayList<Integer> allOperationsAmount = new ArrayList<Integer>();
 
     final ArrayList<String> resources = new ArrayList<String>();
     final ArrayList<Integer> resourcesCost = new ArrayList<Integer>();
+
+    final ArrayList<String> opsNames = new ArrayList<>();
+    final ArrayList<Integer> opsProgress = new ArrayList<>();
+    OperationListAdapter opsListAdapter;
 
     Firebase simulationRef;
 
@@ -74,9 +79,23 @@ public abstract class MasterActivity extends ActionBarActivity {
                         long v = m.getTimes().get(m.getTimeCounter());
                         Log.v("MILLIS", v + " ");
                         final Operation actualOperation = g.getSimulation().getOperations().get(m.getCurrentResource());
-//                        long startTime = v - actualOperation.getTime();
-//                        long progressTime = millis - startTime;
 
+                        int listId = listViewOpIds.get(actualOperation.getId());
+
+                        double startTime =((Long) ((v - actualOperation.getTime())/1000)).doubleValue();
+                        double progressTime = ((Long)((millis - (v - actualOperation.getTime()))/1000)).doubleValue();
+                        double endTime = ((Long)(v/1000)).doubleValue();
+
+                        int progressVal = ((Double) ((progressTime/(endTime - startTime))*100)).intValue();
+
+                        Log.v("STARTTIME", listId+"");
+
+                        opsProgress.set(listId, progressVal);
+//                        Log.v("STARTTIME", startTime+"");
+//                        Log.v("PROGRESSTIME", progressTime+"");
+//                        Log.v("ENDTIME", endTime+"");
+//                        Log.v("PROGRESSVAL", progressVal+"");
+                        opsListAdapter.notifyDataSetChanged();
 
                         // v end time
                         if (millis >= v) {
