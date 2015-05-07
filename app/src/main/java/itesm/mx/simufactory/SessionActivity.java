@@ -251,19 +251,19 @@ public class SessionActivity extends ActionBarActivity {
         ArrayList<Machine> machines = new ArrayList<Machine>();
 
         /// RESOURCE, ID, COST, GAIN, TIME, TEAMID, REQUIRED, AMOUNT ( owned )
-        operations.add(new Operation("A", 0, 5, 0, 0, 0, null, 3));
-        operations.add(new Operation("B", 1, 10, 0, 0, 0, null, 3));
+        operations.add(new Operation("Sand", 0, 5, 0, 0, 0, null, 3));
+        operations.add(new Operation("Steel", 1, 10, 0, 0, 0, null, 3));
 
-        operations.add(new Operation("P1", 2, 10, 0, 5000, 1, new ArrayList<Integer>(Arrays.asList(0)), 0));
-        operations.add(new Operation("P2", 3, 20, 0, 7000, 2, new ArrayList<Integer>(Arrays.asList(1)), 0));
+        operations.add(new Operation("Glass", 2, 10, 0, 5000, 1, new ArrayList<Integer>(Arrays.asList(0)), 0));
+        operations.add(new Operation("Frame", 3, 20, 0, 7000, 2, new ArrayList<Integer>(Arrays.asList(1)), 0));
 
-        operations.add(new Operation("C", 4, 10, 35, 10000, 3, new ArrayList<Integer>(Arrays.asList(2, 3)), 0));
+        operations.add(new Operation("Window", 4, 10, 100, 10000, 3, new ArrayList<Integer>(Arrays.asList(2, 3)), 0));
 
-        machines.add(new Machine("Machine 1", 1));
-        machines.add(new Machine("Machine 2", 1));
-        machines.add(new Machine("Machine 3", 2));
-        machines.add(new Machine("Machine 4", 2));
-        machines.add(new Machine("Machine 5", 3));
+        machines.add(new Machine("Red1", 1));
+        machines.add(new Machine("Red2", 1));
+        machines.add(new Machine("Green1", 2));
+        machines.add(new Machine("Green2", 2));
+        machines.add(new Machine("Blue1", 3));
 
         //CASH, TIME, OPERATIONS, MACHINES, NUM OF TEAMS
         Simulation simulation1 = new Simulation(100, 10000, operations, machines, 3);
