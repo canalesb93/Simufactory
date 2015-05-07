@@ -53,7 +53,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="105dp"
+            android:layout_height="205dp"
             android:id="@+id/resourcesLV"
             android:choiceMode="none" />
 
@@ -75,7 +75,7 @@
 
         <ListView
             android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_height="217dp"
             android:id="@+id/machinesLV"
             android:choiceMode="singleChoice"
             android:layout_marginBottom="15dp"
