@@ -167,7 +167,7 @@ public class MainActivity extends ActionBarActivity {
                                 pass = true;
                             }
 
-                            Toast.makeText(getApplicationContext(), validPassword + " and " + userPassword.getText().toString(), Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), validPassword + " and " + userPassword.getText().toString(), Toast.LENGTH_SHORT).show();
 
                             if (pass) {
 

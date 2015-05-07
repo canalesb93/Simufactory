@@ -86,6 +86,7 @@ public class StoreActivity extends ActionBarActivity {
                         int operationId = arrIds.get(position);
                         Operation actualOperation = g.getSimulation().getOperations().get(operationId);
                         if( ((Long) currentData.child("money").getValue()).intValue() >= actualOperation.getCost() ){
+                            g.setMoneySpent(g.getMoneySpent()+actualOperation.getCost());
                             currentData.child("money").setValue(((Long) currentData.child("money").getValue()) - actualOperation.getCost());
                             currentData.child("operations/"+operationId+"/amount").setValue(((Long) currentData.child("operations/"+operationId+"/amount").getValue()) + 1);
                             pass = true;
