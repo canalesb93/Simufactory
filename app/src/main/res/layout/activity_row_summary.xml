@@ -31,15 +31,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="ms value"
-        android:id="@+id/tvMoneySpent"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_toRightOf="@+id/tvTeamName"
-        android:layout_toEndOf="@+id/tvTeamName" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Money Earned"
         android:id="@+id/textView5"
         android:layout_marginTop="39dp"
@@ -50,16 +41,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="me value"
-        android:id="@+id/tvMoneyEarned"
-        android:layout_alignTop="@+id/textView5"
-        android:layout_alignLeft="@+id/tvMoneySpent"
-        android:layout_alignStart="@+id/tvMoneySpent" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Produced Products"
+        android:text="Produced"
         android:id="@+id/textView7"
         android:layout_marginTop="39dp"
         android:layout_below="@+id/textView5"
@@ -93,30 +75,4 @@
         android:layout_toRightOf="@+id/tvTeamName"
         android:layout_toEndOf="@+id/tvTeamName" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="valueA"
-        android:id="@+id/tvProdA"
-        android:layout_alignTop="@+id/textView19"
-        android:layout_toRightOf="@+id/tvMoneyEarned"
-        android:layout_toEndOf="@+id/tvMoneyEarned" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="valueB"
-        android:id="@+id/tvProdB"
-        android:layout_below="@+id/tvProdA"
-        android:layout_toRightOf="@+id/tvMoneyEarned"
-        android:layout_toEndOf="@+id/tvMoneyEarned" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="valueC"
-        android:id="@+id/tvProdC"
-        android:layout_below="@+id/tvProdB"
-        android:layout_toRightOf="@+id/tvMoneyEarned"
-        android:layout_toEndOf="@+id/tvMoneyEarned" />
 </RelativeLayout>

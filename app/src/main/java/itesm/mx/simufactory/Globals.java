@@ -11,9 +11,10 @@ public class Globals{
     // Global variable
     private Simulation simulation;
     private long startTime;
+    private int moneySpent;
 
     // Restrict the constructor from being instantiated
-    private Globals(){}
+    private Globals(){moneySpent = 0;}
 
     public Simulation getSimulation() {
         return simulation;
@@ -36,5 +37,13 @@ public class Globals{
             instance=new Globals();
         }
         return instance;
+    }
+
+    public int getMoneySpent() {
+        return moneySpent;
+    }
+
+    public void setMoneySpent(int moneySpent) {
+        this.moneySpent = moneySpent;
     }
 }
