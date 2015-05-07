@@ -24,7 +24,6 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -37,6 +36,7 @@ public class SessionActivity extends ActionBarActivity {
     boolean admin = false;
     Simulation simu;
     Simulation mySimulation;
+
 
 
     final ArrayList<String> users = new ArrayList<String>();
@@ -53,7 +53,6 @@ public class SessionActivity extends ActionBarActivity {
         final EditText budgetConfig = (EditText) findViewById(R.id.budgetET);
         final EditText expensesConfig = (EditText) findViewById(R.id.expensesET);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-
         titleTextView = (TextView) findViewById(R.id.titleSession);
 
         Bundle extras = getIntent().getExtras();
@@ -145,8 +144,15 @@ public class SessionActivity extends ActionBarActivity {
             public void onClick(View v) {
             if(admin){
                 mySimulation = createModel1();
-                if(timerConfig.getText().length() > 0)
-                   mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
+                if(timerConfig.getText().length() > 0) {
+                    mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
+                }
+                if (budgetConfig.getText().length() > 0) {
+                    String cleanString = budgetConfig.getText().toString().replaceAll("[$,.]", "");
+                    double parsed = Double.parseDouble(cleanString);
+                    mySimulation.setMoney((int) parsed);
+
+                }
                 sessionRef.child("simulation").setValue(mySimulation);
 
                 Globals g = Globals.getInstance();
@@ -167,23 +173,6 @@ public class SessionActivity extends ActionBarActivity {
             }
         });
 
-        TextWatcher textWatcher = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        };
-
         budgetConfig.addTextChangedListener(new TextWatcher() {
             private String current = "";
 
@@ -198,9 +187,10 @@ public class SessionActivity extends ActionBarActivity {
 
                     String cleanString = s.toString().replaceAll("[$,.]", "");
 
-                    double parsed = Double.parseDouble(cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
-
+                    int parsed = Integer.parseInt(cleanString);
+//                    String formatted = format.format((parsed));
+                    String formatted = String.format("%,d", parsed);
+                    formatted = '$' + formatted;
                     current = formatted;
                     budgetConfig.setText(formatted);
                     budgetConfig.setSelection(formatted.length());
@@ -228,8 +218,11 @@ public class SessionActivity extends ActionBarActivity {
 
                     String cleanString = s.toString().replaceAll("[$,.]", "");
 
-                    double parsed = Double.parseDouble(cleanString);
-                    String formatted = NumberFormat.getCurrencyInstance().format((parsed/100));
+
+                    int parsed = Integer.parseInt(cleanString);
+                    String formatted = String.format("%,d", parsed);
+                    formatted = '$' + formatted;
+
 
                     current = formatted;
                     expensesConfig.setText(formatted);

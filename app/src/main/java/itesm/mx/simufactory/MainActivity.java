@@ -164,12 +164,6 @@ public class MainActivity extends ActionBarActivity {
                             validPassword = pressedPassword;
 
                             if (validPassword.equals("") || userPassword.getText().toString().equals(validPassword)) {
-                                pass = true;
-                            }
-
-                            Toast.makeText(getApplicationContext(), validPassword + " and " + userPassword.getText().toString(), Toast.LENGTH_SHORT).show();
-
-                            if (pass) {
 
                                 final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
                                 final Firebase usersRef = ref.child("sessions/"+pressedSession+"/users");

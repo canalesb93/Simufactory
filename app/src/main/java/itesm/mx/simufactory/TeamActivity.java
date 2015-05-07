@@ -115,7 +115,11 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 budget = Integer.parseInt(dataSnapshot.getValue().toString());
-                currentBudget.setText(budget + "$");
+                String formatted = String.format("%,d", budget);
+                formatted = '$' + formatted;
+                currentBudget.setText(formatted);
+
+
                 Log.v("CHANGED", "Budget is " + budget);
             }
 
