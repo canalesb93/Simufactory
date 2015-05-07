@@ -68,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
             // Retrieve new posts as they are added to Firebase
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-                Toast.makeText(getApplicationContext(), "Session added to Firebase.", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(), "Session added to Firebase.", Toast.LENGTH_SHORT).show();
                 sessions.add((String) snapshot.child("name").getValue());
                 passwords.add((String) snapshot.child("password").getValue());
                 if((boolean) snapshot.child("active").getValue()){
