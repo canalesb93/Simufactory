@@ -93,6 +93,16 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
                 if(snapshot.child("teamId").getValue() != null)
                     teamId = (long) snapshot.child("teamId").getValue();
 
+                int oCounter = 0;
+                Log.v("TEAM", teamId + " is the team id");
+                for( Operation o : g.getSimulation().getOperations()){
+                    if(( o.getTeam() == teamId || teamId == 0)  && o.getTime() != 0) {
+                        myOperationsIds.add(oCounter);
+                        Log.v("DEBUG", " ASSIGNED id"+ oCounter + " from " + o.getName() + " on teamID" + o.getTeam());
+                    }
+                    oCounter++;
+                }
+
                 int mCounter = 0;
                 for( Machine m : g.getSimulation().getMachines()){
                     if( m.getTeam() == teamId || teamId == 0) {
@@ -148,13 +158,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 //            public void onCancelled(FirebaseError firebaseError) {}
 //        });
 
-        int oCounter = 0;
-        for( Operation o : g.getSimulation().getOperations()){
-            if(( o.getTeam() == teamId || teamId == 0)  && o.getTime() != 0) {
-                myOperationsIds.add(oCounter);
-            }
-            oCounter++;
-        }
+
 
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
@@ -219,7 +223,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String pressedOperation = opsNames.get(position);
-
+                Log.v("DEBUG", myOperationsIds.get(position)+" is the id");
                 if(selectedMachine != -1) {
                     Intent intent = new Intent(TeamActivity.this, OperationActivity.class);
                     intent.putExtra("admin", admin);
