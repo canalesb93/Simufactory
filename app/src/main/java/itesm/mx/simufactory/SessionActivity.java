@@ -105,12 +105,18 @@ public class SessionActivity extends ActionBarActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     Log.v("CHANGED", "Session started: " + dataSnapshot.getValue().toString());
-                    if (dataSnapshot.getValue().toString() == "true") {
-
+                    if (dataSnapshot.getValue().toString() != "false") {
 
                         //pending selection
                         Globals g = Globals.getInstance();
-                        g.setSimulation(createModel1());
+                        switch (dataSnapshot.getValue().toString()){
+                            case "1":
+                                g.setSimulation(createModel2());
+                                break;
+                            default:
+                                g.setSimulation(createModel1());
+                                break;
+                        }
 
                         Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
                         intent.putExtra("admin", false);
@@ -143,7 +149,17 @@ public class SessionActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
             if(admin){
-                mySimulation = createModel1();
+                int modelType = spinner.getSelectedItemPosition();
+                switch (modelType){
+                    case 1:
+                        mySimulation = createModel2();
+                        break;
+                    default:
+                        mySimulation = createModel1();
+                        break;
+                }
+
+
                 if(timerConfig.getText().length() > 0) {
                     mySimulation.setTime((Long.parseLong(timerConfig.getText().toString())) * 1000);
                 }
@@ -158,7 +174,7 @@ public class SessionActivity extends ActionBarActivity {
                 Globals g = Globals.getInstance();
                 g.setSimulation(mySimulation);
 
-                sessionRef.child("started").setValue(true);
+                sessionRef.child("started").setValue(modelType+"");
 
                 Intent intent = new Intent(SessionActivity.this, TeamActivity.class);
                 intent.putExtra("admin", true);
@@ -260,6 +276,57 @@ public class SessionActivity extends ActionBarActivity {
 
         //CASH, TIME, OPERATIONS, MACHINES, NUM OF TEAMS
         Simulation simulation1 = new Simulation(100, 10000, operations, machines, 3);
+        this.simu = simulation1;
+        return simulation1;
+    }
+
+    public Simulation createModel2(){
+        ArrayList<Operation> operations = new ArrayList<Operation>();
+        ArrayList<Machine> machines = new ArrayList<Machine>();
+
+        /// RESOURCE, ID, COST, GAIN, TIME, TEAMID, REQUIRED, AMOUNT ( owned )
+        operations.add(new Operation("A", 0, 30, 0, 0, 0, null, 3));
+        operations.add(new Operation("C", 1, 35, 0, 0, 0, null, 3));
+        operations.add(new Operation("E", 2, 30, 0, 0, 0, null, 3));
+        operations.add(new Operation("F", 3, 60, 0, 0, 0, null, 3));
+
+        /// RESOURCE, ID, COST, GAIN, TIME, TEAMID, REQUIRED, AMOUNT ( owned )
+        operations.add(new Operation("A1", 4, 0, 0, 4000, 2, new ArrayList<Integer>(Arrays.asList(0)), 0));
+        operations.add(new Operation("C1", 5, 0, 0, 5000, 2, new ArrayList<Integer>(Arrays.asList(1)), 0));
+        operations.add(new Operation("E1", 6, 0, 0, 9000, 3, new ArrayList<Integer>(Arrays.asList(2)), 0));
+        operations.add(new Operation("F1", 7, 0, 0, 15000, 2, new ArrayList<Integer>(Arrays.asList(3)), 0));
+
+        operations.add(new Operation("E2", 8, 0, 0, 18000, 4, new ArrayList<Integer>(Arrays.asList(6)), 0));
+        operations.add(new Operation("F1", 9, 0, 0, 12000, 3, new ArrayList<Integer>(Arrays.asList(7)), 0));
+
+        operations.add(new Operation("B3", 10, 0, 0, 8000, 5, new ArrayList<Integer>(Arrays.asList(4, 5)), 0));
+        operations.add(new Operation("F3", 11, 0, 0, 20000, 4, new ArrayList<Integer>(Arrays.asList(9)), 0));
+
+        operations.add(new Operation("A5", 12, 0, 0, 15000, 2, new ArrayList<Integer>(Arrays.asList(10)), 0));
+        operations.add(new Operation("C5", 13, 0, 0, 6000, 1, new ArrayList<Integer>(Arrays.asList(10)), 0));
+        operations.add(new Operation("E5", 14, 0, 0, 28000, 1, new ArrayList<Integer>(Arrays.asList(2)), 0));
+        operations.add(new Operation("F5", 15, 0, 0, 14000, 1, new ArrayList<Integer>(Arrays.asList(3)), 0));
+
+        operations.add(new Operation("A6", 16, 0, 0, 15000, 3, new ArrayList<Integer>(Arrays.asList(12)), 0));
+
+        operations.add(new Operation("A7", 17, 0, 0, 20000, 4, new ArrayList<Integer>(Arrays.asList(16)), 0));
+        operations.add(new Operation("D7", 18, 0, 0, 9000, 5, new ArrayList<Integer>(Arrays.asList(13, 14)), 0));
+        operations.add(new Operation("F7", 19, 0, 0, 7000, 4, new ArrayList<Integer>(Arrays.asList(15)), 0));
+
+        operations.add(new Operation("A9 Product", 20, 0, 180, 18000, 3, new ArrayList<Integer>(Arrays.asList(17)), 0));
+        operations.add(new Operation("D9 Product", 21, 0, 240, 6000, 3, new ArrayList<Integer>(Arrays.asList(18)), 0));
+        operations.add(new Operation("F9 Product", 22, 0, 180, 10000, 3, new ArrayList<Integer>(Arrays.asList(19)), 0));
+
+        machines.add(new Machine("Blue1", 1));
+        machines.add(new Machine("Green1", 2));
+        machines.add(new Machine("Green2", 2));
+        machines.add(new Machine("Aqua1", 3));
+        machines.add(new Machine("Aqua2", 3));
+        machines.add(new Machine("Purple1", 4));
+        machines.add(new Machine("Brown1", 5));
+
+        //CASH, TIME, OPERATIONS, MACHINES, NUM OF TEAMS
+        Simulation simulation1 = new Simulation(2500, 600000, operations, machines, 3);
         this.simu = simulation1;
         return simulation1;
     }
