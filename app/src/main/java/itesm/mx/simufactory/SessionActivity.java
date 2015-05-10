@@ -202,9 +202,12 @@ public class SessionActivity extends ActionBarActivity {
                     budgetConfig.removeTextChangedListener(this);
 
                     String cleanString = s.toString().replaceAll("[$,.]", "");
-
-                    int parsed = Integer.parseInt(cleanString);
-//                    String formatted = format.format((parsed));
+                    int parsed;
+                    if (cleanString.equals("")){
+                        parsed = 0;
+                    } else {
+                        parsed = Integer.parseInt(cleanString);
+                    }
                     String formatted = String.format("%,d", parsed);
                     formatted = '$' + formatted;
                     current = formatted;
@@ -235,7 +238,12 @@ public class SessionActivity extends ActionBarActivity {
                     String cleanString = s.toString().replaceAll("[$,.]", "");
 
 
-                    int parsed = Integer.parseInt(cleanString);
+                    int parsed;
+                    if (cleanString.equals("")){
+                        parsed = 0;
+                    } else {
+                        parsed = Integer.parseInt(cleanString);
+                    }
                     String formatted = String.format("%,d", parsed);
                     formatted = '$' + formatted;
 
