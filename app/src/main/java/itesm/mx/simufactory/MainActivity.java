@@ -25,6 +25,7 @@ import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -38,6 +39,7 @@ public class MainActivity extends ActionBarActivity {
     String titleString;
     String pressedSession;
     String pressedPassword;
+    Firebase sessionsRef;
     final ArrayList<String> sessions = new ArrayList<String>();
     final ArrayList<String> actives = new ArrayList<String>();
     final ArrayList<String> passwords = new ArrayList<String>();
@@ -48,12 +50,13 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Firebase.setAndroidContext(this);
         final String TAG = "SDF";
         final ListView sessionList = (ListView) findViewById(R.id.sessionListView);
 
         ////// ADAPTER
         final SessionListAdapter activeAdapter = new SessionListAdapter(this, sessions, actives);
+        sessionsRef = new Firebase("https://simufactory.firebaseio.com/sessions");
 
         final EditText name = (EditText) findViewById(R.id.sessionName);
         final EditText password = (EditText) findViewById(R.id.sessionPassword);
@@ -116,17 +119,33 @@ public class MainActivity extends ActionBarActivity {
         createSession.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                if(name.getText().length() > 0){
-                    Session mySession = new Session(name.getText().toString(), password.getText().toString());
-//                    Map<String, Session> mysessions = new HashMap<String, Session>();
-//                    mysessions.put(name.getText().toString(), mySession);
-                    sessionsRef.child(name.getText().toString()).setValue(mySession);
+                String sessionName = name.getText().toString();
+                if(sessionName.length() > 0){
 
-                    Intent intent = new Intent(MainActivity.this, SessionActivity.class);
-                    intent.putExtra("sessionTitle", name.getText().toString());
-                    intent.putExtra("admin", true);
-                    Toast.makeText(getApplicationContext(), "Session created.", Toast.LENGTH_SHORT).show();
-                    startActivityForResult(intent, REQUEST_CODE_SESSION);
+                    final Firebase newSession = sessionsRef.child(sessionName);
+                    newSession.addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            newSession.removeEventListener(this);
+                            if (dataSnapshot.exists()) {
+                                Toast.makeText(getApplicationContext(), "Session already exists.", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Session mySession = new Session(name.getText().toString(), password.getText().toString());
+                                sessionsRef.child(name.getText().toString()).setValue(mySession);
+
+                                Intent intent = new Intent(MainActivity.this, SessionActivity.class);
+                                intent.putExtra("sessionTitle", name.getText().toString());
+                                intent.putExtra("admin", true);
+                                Toast.makeText(getApplicationContext(), "Session created.", Toast.LENGTH_SHORT).show();
+                                startActivityForResult(intent, REQUEST_CODE_SESSION);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(FirebaseError firebaseError) {
+
+                        }
+                    });
                 } else {
                     Toast.makeText(getApplicationContext(), "Name is required.", Toast.LENGTH_SHORT).show();
                 }
@@ -173,12 +192,9 @@ public class MainActivity extends ActionBarActivity {
 
                             if (validPassword.equals("") || userPassword.getText().toString().equals(validPassword)) {
 
-                                final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
-                                final Firebase usersRef = ref.child("sessions/"+pressedSession+"/users");
+                                final Firebase usersRef = sessionsRef.child(pressedSession+"/users");
 
                                 User myuser = new User(userName.getText().toString());
-//                                Map<String, User> myusers = new HashMap<String, User>();
-//                                myusers.put(userName.getText().toString(), myuser);
                                 usersRef.child(userName.getText().toString()).setValue(myuser);
 
                                 Intent intent = new Intent(MainActivity.this, SessionActivity.class);
