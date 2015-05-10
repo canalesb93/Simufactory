@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -47,7 +48,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
 
         opsListAdapter = new OperationListAdapter(this, opsNames, opsProgress);
-
+        resID=getResources().getIdentifier("finished", "raw", getPackageName());
+        mediaPlayer= MediaPlayer.create(this, resID);
         btnStore = (Button) findViewById(R.id.buyResourcesButton);
 
         g.setStartTime(System.currentTimeMillis());

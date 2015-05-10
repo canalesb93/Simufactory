@@ -1,6 +1,7 @@
 package itesm.mx.simufactory;
 
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -60,6 +61,11 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     Toast myToast;
 
+    int resID;
+
+    MediaPlayer mediaPlayer;
+
+
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
@@ -115,6 +121,7 @@ public abstract class MasterActivity extends ActionBarActivity {
                                     currentData.child("operations/" + m.getCurrentResource() + "/amount").setValue((Long) currentData.child("operations/" + m.getCurrentResource() + "/amount").getValue() + 1);
                                     currentData.child("money").setValue((Long) currentData.child("money").getValue() + actualOperation.getGain());
                                     myToast.setText("Resource " + actualOperation.getName() +" was produced");
+                                    mediaPlayer.start();
                                     if (m.getTimeCounter() < m.getTimes().size()) {
                                         if (((Long) currentData.child("money").getValue()).intValue() >= actualOperation.getCost()) {
                                             currentData.child("money").setValue((Long) currentData.child("money").getValue() - actualOperation.getCost());

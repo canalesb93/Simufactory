@@ -10,6 +10,9 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -39,6 +42,8 @@ public class MainActivity extends ActionBarActivity {
     final ArrayList<String> actives = new ArrayList<String>();
     final ArrayList<String> passwords = new ArrayList<String>();
 
+    Firebase ref;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,7 +63,7 @@ public class MainActivity extends ActionBarActivity {
 
         //Crear sesion en Firebase
         Firebase.setAndroidContext(this);
-        final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
+        ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase sessionsRef = ref.child("sessions");
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -87,7 +92,9 @@ public class MainActivity extends ActionBarActivity {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                sessions.clear();
+                passwords.clear();
+                activeAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -191,6 +198,29 @@ public class MainActivity extends ActionBarActivity {
             // Create the AlertDialog object and return it
             return builder.create();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        super.onOptionsItemSelected(item);
+
+        switch(item.getItemId()){
+            case R.id.action_clear:
+                Toast.makeText(getBaseContext(), "You cleared all sessions", Toast.LENGTH_SHORT).show();
+                ref.child("sessions").removeValue();
+                break;
+
+        }
+        return true;
+
     }
 
 }

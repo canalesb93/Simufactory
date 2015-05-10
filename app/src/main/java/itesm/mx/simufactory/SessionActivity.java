@@ -181,7 +181,6 @@ public class SessionActivity extends ActionBarActivity {
                 intent.putExtra("sessionTitle", titleString);
 
 
-
                 startActivity(intent);
             } else {
                 Toast.makeText(getApplicationContext(), "No admin priviledges", Toast.LENGTH_SHORT).show();
@@ -275,7 +274,7 @@ public class SessionActivity extends ActionBarActivity {
         machines.add(new Machine("Blue1", 3));
 
         //CASH, TIME, OPERATIONS, MACHINES, NUM OF TEAMS
-        Simulation simulation1 = new Simulation(100, 10000, operations, machines, 3);
+        Simulation simulation1 = new Simulation(100, 120000, operations, machines, 3);
         this.simu = simulation1;
         return simulation1;
     }

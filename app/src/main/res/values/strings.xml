@@ -3,7 +3,7 @@
 
     <string name="app_name">Simufactory</string>
     <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_clear">Clear Sessions</string>
     <string name="title_activity_session">SessionActivity</string>
     <string name="title_activity_team">TeamActivity</string>
 
