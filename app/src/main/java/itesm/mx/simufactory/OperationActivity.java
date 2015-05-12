@@ -27,8 +27,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 
+//Operation class Activity
 public class OperationActivity extends ActionBarActivity {
 
+    //Variable initialization
     String currentOperation = "No name";
     Integer currentMachine = 0;
     Integer operationPosition = 0;
@@ -46,11 +48,13 @@ public class OperationActivity extends ActionBarActivity {
 
     Toast myToast;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_operation);
 
+        //Views initializations
         TextView titleTextView = (TextView) findViewById(R.id.operationNameTV);
         TextView timeTextView = (TextView) findViewById(R.id.tvTime);
 
@@ -66,6 +70,7 @@ public class OperationActivity extends ActionBarActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
+        //Recieves values from TeamActivity
         if(extras!= null){
             currentOperation = extras.getString("operationName");
             currentMachine = extras.getInt("selectedMachine");
@@ -77,27 +82,33 @@ public class OperationActivity extends ActionBarActivity {
             Toast.makeText(getApplicationContext(), "ERROR.", Toast.LENGTH_SHORT).show();
         }
 
+        //Firebase initialization
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
+        //Get actual Operation attributes
         actualOperation = g.getSimulation().getOperations().get(operationPosition);
         actualMachine = g.getSimulation().getMachines().get(currentMachine);
         titleTextView.setText("Machine " + actualMachine.getName() + " with operation " + currentOperation);
 
 
+        //Set view values from Operation attributes
         resCost.setText("$"+actualOperation.getCost());
         resReward.setText("$"+actualOperation.getGain());
         resProduces.setText(actualOperation.getName());
         processing.setText("0");
         done.setText("0");
 
+        //Set time in time view
         timeTextView.setText((actualOperation.getTime() / 1000) + " seconds");
-        Log.v("TEST", actualOperation.getName());
+
+        //ResourceAdapter to show the resource numbers in the ListView
         final ResourceListAdapter requiredAdapter = new ResourceListAdapter(this, requiredResources, operationsAmount);
 
         myToast = Toast.makeText(getApplicationContext(), "MESSAGE ERROR", Toast.LENGTH_SHORT);
 
+        //Iterate through the required Operations of the actual Operation
         int opCounter = 0;
         for( int i : actualOperation.getRequires()){
             requiredResources.add(g.getSimulation().getOperations().get(i).getName());
@@ -106,6 +117,7 @@ public class OperationActivity extends ActionBarActivity {
             final int reqOpPosition = opCounter;
 
             simulationRef.child("operations/"+i+"/amount").addValueEventListener(new ValueEventListener() {
+                //Get Operations thata from Firebase and show them in views
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     int amount = Integer.parseInt(dataSnapshot.getValue().toString());
@@ -124,6 +136,7 @@ public class OperationActivity extends ActionBarActivity {
             opCounter++;
         }
         simulationRef.child("operations").addValueEventListener(new ValueEventListener() {
+            //Set view values
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 processing.setText(actualMachine.getTimes().size() + "");
@@ -137,13 +150,14 @@ public class OperationActivity extends ActionBarActivity {
 
         requiredResourcesLV.setAdapter(requiredAdapter);
 
-
+        //Start Machine Button
         Button startMachineButton = (Button) findViewById(R.id.startMachineButton);
         startMachineButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // pending verifications
                 if(actualMachine.getCurrentResource() < 0){
+                    //Verifies that user has enough resources to carry on with the operation
                     simulationRef.runTransaction(new Transaction.Handler() {
                         @Override
                         public Transaction.Result doTransaction(MutableData currentData) {
