@@ -19,7 +19,13 @@ import com.firebase.client.Transaction;
 
 import java.util.ArrayList;
 
+/*
+This activity manages the time for the simulation. During the whole simulation it is always existing.
+It accesses the global variables of the simulation to be able to detect when a new resource should be
+created.
 
+It is created when TeamActivity is opened, variables are defined through there.
+ */
 public abstract class MasterActivity extends ActionBarActivity {
 
     TextView timerTextView;
@@ -69,8 +75,11 @@ public abstract class MasterActivity extends ActionBarActivity {
 
     //runs without a timer by reposting this handler at the end of the runnable
     Handler timerHandler = new Handler();
+
+    // Handeles the time.
     Runnable timerRunnable = new Runnable() {
 
+        // This function runs every 500 milliseconds
         @Override
         public void run() {
             if(timerTextView != null) {
@@ -92,25 +101,18 @@ public abstract class MasterActivity extends ActionBarActivity {
                         double progressTime = ((Long)((millis - (v - actualOperation.getTime()))/1000)).doubleValue();
                         double endTime = ((Long)(v/1000)).doubleValue();
 
+                        // Updates progress bar
                         int progressVal = ((Double) ((progressTime/(endTime - startTime))*100)).intValue();
 
-                        Log.v("STARTTIME", listId+"");
-
                         opsProgress.set(listId, progressVal);
-//                        Log.v("STARTTIME", startTime+"");
-//                        Log.v("PROGRESSTIME", progressTime+"");
-//                        Log.v("ENDTIME", endTime+"");
-//                        Log.v("PROGRESSVAL", progressVal+"");
                         opsListAdapter.notifyDataSetChanged();
 
-                        // v end time
+
                         if (millis >= v) {
                             Log.v("MILLIS", "FINISHED ONE GOING TO NEXT");
                             m.addTimeCounter();
 
-
-
-                            //add resource START
+                            //Add and remove resources transaction based on time.
                             simulationRef.runTransaction(new Transaction.Handler() {
                                 @Override
                                 public Transaction.Result doTransaction(MutableData currentData) {
@@ -191,21 +193,13 @@ public abstract class MasterActivity extends ActionBarActivity {
     };
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
 
-
-
-
-    }
-
-    public void onFinish(){
-
-    }
+    public void onFinish(){}
 
     @Override
-    public void onPause() {
-        super.onPause();
-//        timerHandler.removeCallbacks(timerRunnable);
+    public void onPause() { super.onPause();
+        // If uncommented, time will stop.
+        // timerHandler.removeCallbacks(timerRunnable);
     }
 }
