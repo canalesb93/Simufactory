@@ -20,9 +20,10 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-/**
- * Created by Enrique on 5/5/15.
- */
+/*
+Manages the resources that the user can buy with money.
+Lists all buyable resources. Click to buy.
+*/
 public class StoreActivity extends ActionBarActivity {
 
     ListView lvResources;
@@ -55,7 +56,7 @@ public class StoreActivity extends ActionBarActivity {
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
 
-        // Updates money variable
+        // Updates budget textView when money changes in Firebase.
         simulationRef.child("money").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -78,6 +79,7 @@ public class StoreActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, final int position, long arg3) {
 
+                // Important money/budget transaction, updates all budget textViews
                 simulationRef.runTransaction(new Transaction.Handler() {
                     boolean pass = false;
 
