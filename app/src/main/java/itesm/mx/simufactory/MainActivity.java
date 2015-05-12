@@ -29,7 +29,11 @@ import com.firebase.client.ValueEventListener;
 
 import java.util.ArrayList;
 
-
+/*
+This is the startup activity.
+Lists all sessions, active or inactive.
+A user can create a session or join an active one.
+ */
 public class MainActivity extends ActionBarActivity {
 
     String validPassword;
@@ -64,7 +68,7 @@ public class MainActivity extends ActionBarActivity {
 
         final LoginSessionDialog adLoginSession = new LoginSessionDialog();
 
-        //Crear sesion en Firebase
+        //Start up Firebase library
         Firebase.setAndroidContext(this);
         ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase sessionsRef = ref.child("sessions");
@@ -73,6 +77,7 @@ public class MainActivity extends ActionBarActivity {
 
         Log.d("TAG", "AddListener!");
 
+        // Lists and will keep listing all sessions that are in firebase
         sessionsRef.addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             @Override
@@ -88,10 +93,7 @@ public class MainActivity extends ActionBarActivity {
                 activeAdapter.notifyDataSetChanged();
             }
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-//                Toast.makeText(getApplicationContext(), "Session changed.", Toast.LENGTH_SHORT).show();
-            }
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
@@ -100,15 +102,8 @@ public class MainActivity extends ActionBarActivity {
                 activeAdapter.notifyDataSetChanged();
             }
 
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(FirebaseError firebaseError) {
-
-            }
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
+            public void onCancelled(FirebaseError firebaseError) {}
 
         });
 
