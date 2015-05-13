@@ -150,9 +150,13 @@ public class MainActivity extends ActionBarActivity {
         AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                pressedSession = sessions.get(position);
-                pressedPassword = passwords.get(position);
-                adLoginSession.show(getFragmentManager(), TAG );
+                if(actives.get(position).equals("inactive")){
+                    Toast.makeText(getApplicationContext(), "That session has ended.", Toast.LENGTH_SHORT).show();
+                } else {
+                    pressedSession = sessions.get(position);
+                    pressedPassword = passwords.get(position);
+                    adLoginSession.show(getFragmentManager(), TAG);
+                }
             }
         };
         sessionList.setOnItemClickListener(itemListener);
@@ -184,7 +188,6 @@ public class MainActivity extends ActionBarActivity {
                             final EditText userName = (EditText) view.findViewById(R.id.username);
 
                             validPassword = pressedPassword;
-
                             if (validPassword.equals("") || userPassword.getText().toString().equals(validPassword)) {
 
                                 final Firebase usersRef = sessionsRef.child(pressedSession+"/users");
@@ -198,6 +201,8 @@ public class MainActivity extends ActionBarActivity {
                                 intent.putExtra("name", userName.getText().toString());
 
                                 startActivity(intent);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Incorrect password.", Toast.LENGTH_SHORT).show();
                             }
                         }
                     })
