@@ -41,6 +41,7 @@
         android:fontFamily="sans-serif"
         android:hint="Clave de sesion"
         android:textColorHint="#808080"
+        android:textColor="#000"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:password="true" />

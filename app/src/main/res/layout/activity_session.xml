@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Time"
+        android:text="Time:"
         android:id="@+id/timeTV"
         android:layout_below="@+id/textView"
         android:layout_alignParentLeft="true"

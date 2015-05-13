@@ -21,6 +21,7 @@ import com.firebase.client.ValueEventListener;
 
 public class SummaryActivity extends MasterActivity implements View.OnClickListener {
 
+    //View initiaizations
     Button btnFinish;
     TextView tvMoneyEarned;
     TextView tvMoneySpent;
@@ -32,17 +33,20 @@ public class SummaryActivity extends MasterActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_summary);
 
+        //View initializations
         btnFinish = (Button) findViewById(R.id.btnFinish);
         tvMoneyEarned = (TextView) findViewById(R.id.tvMoneyEarned);
         tvMoneySpent = (TextView) findViewById(R.id.tvMoneySpent);
         tvTotalTime = (TextView) findViewById(R.id.tvTotalTime);
         lvResources = (ListView) findViewById(R.id.lvResources);
 
+        //Resource adapter for resources ListView
         String titleString = null;
         final ResourceListAdapter resourcesAdapter = new ResourceListAdapter(this, allOperations, allOperationsAmount);
 
         Bundle extras = getIntent().getExtras();
 
+        //Gets session title from Session to display it in the Summary Title
         if(extras != null){
             titleString = extras.getString("sessionTitle");
         }else{
@@ -51,6 +55,7 @@ public class SummaryActivity extends MasterActivity implements View.OnClickListe
 
         tvMoneySpent.setText("$"+Integer.toString(g.getMoneySpent())+".00");
 
+        //Gets Firebase data to get money values that have changed in session
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase simulationRef = ref.child("sessions/"+titleString+"/simulation");
@@ -74,6 +79,7 @@ public class SummaryActivity extends MasterActivity implements View.OnClickListe
             public void onCancelled(FirebaseError firebaseError) {}
         });
 
+        //Populates operations list with their names and amounts
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -82,7 +88,6 @@ public class SummaryActivity extends MasterActivity implements View.OnClickListe
                 allOperationsAmount.add(Integer.parseInt(dataSnapshot.child("amount").getValue().toString()));
                 resourcesAdapter.notifyDataSetChanged();
             }
-
             @Override
             public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 int index = Integer.parseInt(dataSnapshot.getKey().toString());
@@ -106,11 +111,13 @@ public class SummaryActivity extends MasterActivity implements View.OnClickListe
         btnFinish.setOnClickListener(this);
     }
 
+    //Prevents user from pressing back and going to previous activity
     @Override
     public void onBackPressed() {
         Toast.makeText(getApplicationContext(), "Click finish to end session", Toast.LENGTH_SHORT).show();
     }
 
+    //When "Finish" button is clicked, user is taken to MainActivity
     @Override
     public void onClick(View v) {
         if(btnFinish.isPressed()){

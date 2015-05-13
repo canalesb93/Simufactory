@@ -5,6 +5,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -25,7 +26,14 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
+/*
+This activity manages the main simulation activity, where the users are interacting mostly with the
+simulation.
+It defines variables from MasterActivity which it extends.
 
+It uses 3 list views to manage: resources, machines and operations.
+
+ */
 public class TeamActivity extends MasterActivity implements View.OnClickListener {
 
     final ArrayList<String> operations = new ArrayList<String>();
@@ -34,6 +42,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
     Button btnStore;
 
 
+    // Defines most variables
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,7 +56,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         final ListView resourcesLV = (ListView) findViewById(R.id.resourcesLV);
 
         opsListAdapter = new OperationListAdapter(this, opsNames, opsProgress);
-
+        resID=getResources().getIdentifier("finished", "raw", getPackageName());
+        mediaPlayer= MediaPlayer.create(this, resID);
         btnStore = (Button) findViewById(R.id.buyResourcesButton);
 
         g.setStartTime(System.currentTimeMillis());
@@ -67,6 +77,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 
         myToast = Toast.makeText(getApplicationContext(), "MESSAGE ERROR", Toast.LENGTH_SHORT);
 
+        // Initializes Firebase library
         Firebase.setAndroidContext(this);
         final Firebase ref = new Firebase("https://simufactory.firebaseio.com/");
         final Firebase userRef = ref.child("sessions/"+titleString+"/users/"+userName);
@@ -86,6 +97,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
 
         final ArrayAdapter<String> machinesAdapter = new ArrayAdapter<String>(this, R.layout.activity_row_machines, R.id.machineNameTV, machines);
 
+        // Retrieves information from the user
         userRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot snapshot) {
@@ -121,6 +133,7 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             }
         });
 
+        // Handles the monay TextView, keeps it looking for changes
         simulationRef.child("money").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -139,27 +152,8 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             }
         });
 
-
-
-//
-//        simulationRef.child("machines").addChildEventListener(new ChildEventListener() {
-//            // Retrieve new posts as they are added to Firebase
-//            @Override
-//            public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
-//                if((long) snapshot.child("team").getValue() == teamId || teamId == 0) {
-//                    machines.add((String) snapshot.child("name").getValue());
-//                    machinesAdapter.notifyDataSetChanged();
-//                }
-//            }
-//
-//            public void onChildChanged(DataSnapshot dataSnapshot, String s) {}
-//            public void onChildRemoved(DataSnapshot dataSnapshot) {}
-//            public void onChildMoved(DataSnapshot dataSnapshot, String s) {}
-//            public void onCancelled(FirebaseError firebaseError) {}
-//        });
-
-
-
+        // Retrieves all operations from firebase, filters the ones which do not belong to the user
+        // team.
         simulationRef.child("operations").addChildEventListener(new ChildEventListener() {
             // Retrieve new posts as they are added to Firebase
             int opsCounter = 0;
@@ -167,19 +161,15 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
             @Override
             public void onChildAdded(DataSnapshot snapshot, String previousChildKey) {
                 if(((long) snapshot.child("team").getValue() == teamId || teamId == 0) && Integer.parseInt(snapshot.child("time").getValue().toString()) != 0) {
-                    //operations.add((String) snapshot.child("name").getValue());
 
                     double fractionPercentage = 0.0;
                     int percentageProgress = 0;
-
-                    //fractionPercentage = progress/complete *100;
 
                     opsNames.add((String) snapshot.child("name").getValue());
                     opsProgress.add(0);
                     listViewOpIds.add(opsCounter);
                     opsListAdapter.notifyDataSetChanged();
                     opsCounter++;
-                    //operationsAdapter.notifyDataSetChanged();
                 } else {
                     listViewOpIds.add(-1);
                 }
@@ -248,24 +238,6 @@ public class TeamActivity extends MasterActivity implements View.OnClickListener
         };
         machinesLV.setOnItemClickListener(machineListViewListener);
         operationLV.setOnItemClickListener(operationListViewListener);
-
-//        PAUSE BUTTON
-//        Button b = (Button) findViewById(R.id.startMachineButton);
-//        b.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Button b = (Button) v;
-//                if (b.getText().equals("stop")) {
-//                    timerHandler.removeCallbacks(timerRunnable);
-//                    b.setText("start");
-//                } else {
-//                    startTime = System.currentTimeMillis();
-//                    timerHandler.postDelayed(timerRunnable, 0);
-//                    b.setText("stop");
-//                }
-//            }
-//        });
 
         btnStore.setOnClickListener(this);
 
